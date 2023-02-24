@@ -14,7 +14,7 @@ export default function Footer(){
                   <div className="flex items-center">
 
                     <a href="index.html" className="mb-7 inline-block">
-                      <img src="images/logo.png" alt="logo" className="h-10" />
+                      <img src="/images/logo.png" alt="logo" className="h-10" />
                     </a>
                     <h1
                 className="ml-2 mb-6 text-[20px] font-bold leading-tight text-white md:text-[25px] lg:text-[40px] xl:text-[23px] 2xl:text-[25px] sm:text-[23px]"

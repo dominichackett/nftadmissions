@@ -43,7 +43,7 @@ import {
                     className="header-logo block"
                   >
                     <img
-                      src="images/logo.png"
+                      src="/images/logo.png"
                       alt="logo"
                       className="h-10"
                     />

@@ -5,14 +5,14 @@ import Footer from '@/components/Footer/footer'
 import { useState,useEffect } from 'react'
 import { NFTStorage } from "nft.storage";
 import Notification from '@/components/Notification/Notification'
-import { useContractRead } from 'wagmi'
+import { useContractRead,useSigner  } from 'wagmi'
+import { ethers } from 'ethers'
 import { TicketManagerContractAddress,TicketManagerContractABI } from '@/components/Contracts/contracts'
 import {
   useAccount 
  
 } from 'wagmi'
 import useDebounce  from '@/components/useDebounce'
-import { usePrepareContractWrite, useContractWrite ,useWaitForTransaction} from 'wagmi'
 
 export default function Profile() {
   const {address} = useAccount()
@@ -21,48 +21,11 @@ export default function Profile() {
   const [isSaving,setIsSaving] = useState(false)
   const [isLoading,setIsLoading]  = useState(true)
   const [profileMetada,setProfileMetadata] = useState()
-  const debouncedProfileMetada =useDebounce(profileMetada,500)
+  const { data: signer} = useSigner()
 
 
-  //Wagmi Contract Configs
-  const { config } = usePrepareContractWrite({
-    address: TicketManagerContractAddress,
-    abi:TicketManagerContractABI,
-    functionName: 'setProfile',
-    args: [debouncedProfileMetada],
-    enabled: Boolean(debouncedProfileMetada),
-  })
-
-  const { data,write } = useContractWrite(config)
-  const { isError,error, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-  })
-
-  //Check Transaction Errors
-  useEffect(()=>{
-      if(isSuccess)
-      {
-        
-          setDialogType(1) //Success
-          setNotificationTitle("Save Profile")
-          setNotificationDescription("Profile save successfully.")
-          setShow(true)
-          setIsSaving(false)
-      
-      }
-
-      if(isError)
-      {
-          setDialogType(2) //Error
-          setNotificationTitle("Save Profile Error")
-          setNotificationDescription(JSON.stringify(error))
-          setShow(true)
-          setIsSaving(true)
   
-                
-      }
-  },[isError,isSuccess])
-
+ 
   // NOTIFICATIONS functions
     const [notificationTitle, setNotificationTitle] = useState();
     const [notificationDescription, setNotificationDescription] = useState();
@@ -117,6 +80,11 @@ export default function Profile() {
    getProfile()
  }
  ,[])
+
+
+  
+
+
   // create a preview as a side effect, whenever selected file is changed
  useEffect(() => {
   if (!selectedFile) {
@@ -164,10 +132,42 @@ const onSelectFile = (e) => {
     }
 
     setProfileMetadata(metadata.url)
-    write?.()
+    try {
+      const contract = new ethers.Contract(
+        TicketManagerContractAddress,
+        TicketManagerContractABI,
+        signer
+      );
+      //alert(JSON.stringify(myPolicy))
+      let transaction = await contract.setProfile(
+        metadata.url
+      );
 
+      await transaction.wait();
+          setDialogType(1) //Success
+          setNotificationTitle("Save Profile")
+          setNotificationDescription("Profile save successfully.")
+          setShow(true)
+          setIsSaving(false)
+          setProfileMetadata(undefined)
+      
+    } catch (_error) {
+      setDialogType(2) //Error
+      setNotificationTitle("Save Profile Error")
 
+      setNotificationDescription(
+        _error.data ? _error.data.message : _error.message
+      );
+      setShow(true)
+      setIsSaving(false)
+      setProfileMetadata(undefined)
+
+ 
+    }
+  
   } 
+
+  
   return (
     <>
       <Head>
@@ -243,11 +243,15 @@ const onSelectFile = (e) => {
                   <div className="rounded-md bg-[#4E4C64] py-4 px-8">
                    
                   <div className="pt-2">
-                    <button
+                     <button
+                     disabled={isLoading || isSaving || !signer}
+                     
                       className="hover:shadow-form w-full rounded-md bg-primary py-3 px-8 text-center text-base font-semibold text-white outline-none"
                     >
                         Save Profile
                     </button>
+
+                   
                   </div>                    
                    
                   </div>

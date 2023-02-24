@@ -2,29 +2,190 @@ import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import Header from '../components/Header/header'
 import Footer from '@/components/Footer/footer'
-import Features from '@/components/Features/feature'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
+import Notification from '@/components/Notification/Notification'
+import { NFTStorage } from "nft.storage";
+import { useSigner  } from 'wagmi'
+import { ethers } from 'ethers'
+import { TicketManagerContractAddress,TicketManagerContractABI } from '@/components/Contracts/contracts'
+import { useRouter } from 'next/router'
+
 export default function CreateEvent() {
- const  [tickets,setTickets] = useState([{name:"General",price:12,numberOfTickets:200}])
+  const router = useRouter()
+  const [selectedFile, setSelectedFile] = useState()
+  const [preview, setPreview] = useState()
+  const [isSaving,setIsSaving] = useState(false)
+  const { data: signer} = useSigner()
+
+  const [nftstorage] = useState(
+    new NFTStorage({ token: process.env.NEXT_PUBLIC_NFT_STORAGE_KEY })
+  );
+// NOTIFICATIONS functions
+const [notificationTitle, setNotificationTitle] = useState();
+const [notificationDescription, setNotificationDescription] = useState();
+const [dialogType, setDialogType] = useState(1);
+const [show, setShow] = useState(false);
+const close = async () => {
+  setShow(false);
+};
+
+ const  [tickets,setTickets] = useState([{name:"General",price:12,numberOfTickets:200,image:undefined}])
  const addTicketClass = (e) => {
    e.preventDefault()
    // alert("Test")
     let tcks = [...tickets];
-    tcks.push({name:"",price:12,numberOfTickets:200}) 
+    tcks.push({name:"",price:tcks.length+1,numberOfTickets:200,image:undefined}) 
     setTickets(tcks)
     console.log(tcks)
  }
 
  const deleteTicketClass = (e,id) =>{
   e.preventDefault() 
-    alert(id)
      if(tickets.length == 1)
      return 
    let tcks = [...tickets]
+   console.log(tcks)
    tcks.splice(id,1);
+   console.log(tcks)
+   setTickets(tcks)
+ }
+ function nameChanged(event,index){
+   let tcks = [...tickets]
+   tcks[index].name = event.target.value
    setTickets(tcks)
  }
 
+ 
+ function priceChanged(event,index){
+  let tcks = [...tickets]
+  tcks[index].price= event.target.value
+  setTickets(tcks)
+}
+
+
+
+function ticketsChanged(event,index){
+  let tcks = [...tickets]
+  tcks[index].numberOfTickets= event.target.value
+  setTickets(tcks)
+}
+  // create a preview as a side effect, whenever selected file is changed
+  useEffect(() => {
+    if (!selectedFile) {
+        setPreview(undefined)
+        return
+    }
+  
+    const objectUrl = URL.createObjectURL(selectedFile)
+    setPreview(objectUrl)
+  
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedFile])
+
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+        return
+    }
+  
+    // I've kept this example simple by using the first image instead of multiple
+    setSelectedFile(e.target.files[0])
+  }
+
+  function ticketImageSelected(e,index)  {
+    if (!e.target.files || e.target.files.length === 0) {
+        return
+    }
+
+    let tcks = [...tickets]
+    const objectUrl = URL.createObjectURL(e.target.files[0])
+    tcks[index].image= objectUrl
+    tcks[index].file = e.target.files[0]
+    setTickets(tcks)
+    
+  }
+
+  const saveEvent= async (e)=>{
+    e.preventDefault()
+    setIsSaving(true)
+    setDialogType(3) //Information
+    setNotificationTitle("Uploading Event.")
+    setNotificationDescription("Saving Event Information.")
+    setShow(true)
+    const eventdata = {name:document.getElementById("eventName").value, description: document.getElementById("description").value,
+    image: selectedFile,starttime:document.getElementById("startDate").value,endtime:document.getElementById("endDate").value
+    ,token:document.getElementById("tokenName").value,symbol:document.getElementById("symbol").value,ticketClasses:tickets.length  
+  }
+    console.log(eventdata)
+    const eventMetadata = await nftstorage.store(eventdata)
+
+    let ticketClasses = []
+    let metadataURI = []
+    let _tickets = Array.from(tickets)
+    
+    for(let index in _tickets)
+    {
+      let atrributes =[]
+      
+      let ticket = _tickets[index]
+       ticket.description = eventdata.description
+       atrributes.push({trait_type:"Start Date",value: eventdata.starttime})
+       atrributes.push({trait_type:"End Date",value: eventdata.endtime})
+       atrributes.push({trait_type:"Token",value: eventdata.token})
+       atrributes.push({trait_type:"Symbol",value: eventdata.symbol})
+       ticket.attributes= atrributes
+       console.log(ticket)
+      ticket.image =ticket.file
+      //delete ticket.file
+     const ticketMetadata = await nftstorage.store(ticket)
+     metadataURI.push(ticketMetadata.url)
+     ticketClasses.push(  [ticket.name,
+       ticket.price,
+       ticket.numberOfTickets,
+      0,
+      0,
+    true])
+    }
+
+    try {
+      const contract = new ethers.Contract(
+        TicketManagerContractAddress,
+        TicketManagerContractABI,
+        signer
+      );
+      
+      let transaction = await contract.createEvent(eventdata.name,eventdata.token,eventdata.symbol,metadataURI
+        ,new Date(eventdata.starttime).getTime()
+        ,new Date(eventdata.endtime).getTime(),ticketClasses,eventMetadata.url, {
+        gasLimit: 3000000})
+        
+      
+
+      await transaction.wait();
+          setDialogType(1) //Success
+          setNotificationTitle("Create Event")
+          setNotificationDescription("Event successfully Created.")
+          setShow(true)
+          setIsSaving(false)
+          setTimeout(()=> router.push("/myevents"), 1000); // go to my events page in  1 second
+
+      
+    } catch (_error) {
+      setDialogType(2) //Error
+      setNotificationTitle("Save Profile Error")
+
+      setNotificationDescription(
+        _error.data ? _error.data.message : _error.message
+      );
+      setShow(true)
+      setIsSaving(false)
+
+ 
+    }
+  
+  
+
+ } 
  return (
     <>
       <Head>
@@ -70,58 +231,27 @@ export default function CreateEvent() {
     <section className="pb-24">
       <div className="container">
         <div
-          className="relative z-10 overflow-hidden rounded-xl bg-bg-color"
+          className="relative  overflow-hidden rounded-xl bg-bg-color"
         >
-          <form className="p-8 sm:p-10">
+          <form className="p-8 sm:p-10"  onSubmit={ saveEvent}>
             <div className="-mx-5 flex flex-wrap xl:-mx-8">
               <div className="w-full px-5 lg:w-5/12 xl:px-8">
-                <div className="mb-12 lg:mb-0">
+              <div className="mb-12 lg:mb-0">
                   <div className="mb-8">
                     <input
+                      disabled={isSaving }
+                      required={!selectedFile ? true: false}
                       type="file"
-                      name="file"
-                      id="file"
+                      name="eventImage"
+                      id="eventImage"
                       className="sr-only"
+                      onChange={onSelectFile}
                     />
                     <label
-                      for="file"
-                      className="relative flex h-[480px] min-h-[200px] items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
+                      for="eventImage"
+                      className="cursor-pointer relative flex h-[480px] min-h-[200px] items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
                     >
-                      <div>
-                        <div className="mb-4 text-center">
-                          <svg
-                            width="80"
-                            height="80"
-                            viewBox="0 0 80 80"
-                            className="mx-auto"
-                          >
-                            <path
-                              d="M28.3333 45L36.6667 55L48.3333 40L63.3333 60H16.6667L28.3333 45ZM70 63.3333V16.6667C70 12.9667 67 10 63.3333 10H16.6667C14.8986 10 13.2029 10.7024 11.9526 11.9526C10.7024 13.2029 10 14.8986 10 16.6667V63.3333C10 65.1014 10.7024 66.7971 11.9526 68.0474C13.2029 69.2976 14.8986 70 16.6667 70H63.3333C65.1014 70 66.7971 69.2976 68.0474 68.0474C69.2976 66.7971 70 65.1014 70 63.3333Z"
-                              fill="#4D4C5A"
-                            />
-                          </svg>
-                        </div>
-                        <span
-                          className="mb-2 block text-xl font-semibold text-white"
-                        >
-                           Event Image
-                        </span>
-                        <span
-                          className="mb-3 block text-base font-medium text-body-color"
-                        >
-                          PNG, JPG, GIF or WEBP. Max 200mb.
-                        </span>
-                        <span
-                          className="mb-3 block text-base font-medium text-body-color"
-                        >
-                          Choose a file
-                        </span>
-                        <span
-                          className="inline-flex rounded bg-white py-2 px-5 text-base font-semibold text-black"
-                        >
-                          Browse
-                        </span>
-                      </div>
+                     <img src={preview ? preview: '/images/default-image.jpg'}/>
                     </label>
                   </div>
 
@@ -130,10 +260,10 @@ export default function CreateEvent() {
                   <div className="rounded-md bg-[#4E4C64] py-4 px-8">
                    
                   <div className="pt-2">
-                    <button
+                    <button disabled={isSaving }
                       className="hover:shadow-form w-full rounded-md bg-primary py-3 px-8 text-center text-base font-semibold text-white outline-none"
                     >
-                      Create Event
+                        Save Event
                     </button>
                   </div>                    
                    
@@ -144,15 +274,17 @@ export default function CreateEvent() {
                 <div>
                   <div className="mb-5">
                     <label
-                      for="name"
+                      for="eventName"
                       className="mb-2 block text-base font-medium text-white"
                     >
                       Event Name
                     </label>
                     <input
+                      disabled={isSaving }
+                      required
                       type="text"
-                      name="name"
-                      id="name"
+                      name="eventName"
+                      id="eventName"
                       placeholder="Enter event name"
                       className="w-full rounded-md border border-stroke bg-[#353444] py-3 px-6 text-base font-medium text-body-color outline-none transition-all focus:bg-[#454457] focus:shadow-input"
                     />
@@ -166,6 +298,8 @@ export default function CreateEvent() {
                       Description
                     </label>
                     <textarea
+                      disabled={isSaving }
+                      required
                       rows="4"
                       name="description"
                       id="description"
@@ -189,6 +323,8 @@ export default function CreateEvent() {
                           Name
                         </label>
                         <input
+                        disabled={isSaving }
+                          required
                           type="text"
                           name="tokenName"
                           id="tokenName"
@@ -206,6 +342,8 @@ export default function CreateEvent() {
                           Symbol
                         </label>
                         <input
+                        disabled={isSaving }
+                          required   
                           type="text"
                           name="symbol"
                           id="symbol"
@@ -232,6 +370,8 @@ export default function CreateEvent() {
                           Starting date
                         </label>
                         <input
+                        disabled={isSaving }
+                         required
                           type="datetime-local"
                           name="startDate"
                           id="startDate"
@@ -248,9 +388,11 @@ export default function CreateEvent() {
                           Ending date
                         </label>
                         <input
+                          disabled={isSaving }
+                           required
                           type="datetime-local"
-                          name="expireDate"
-                          id="expireDate"
+                          name="endDate"
+                          id="endDate"
                           className="w-full rounded-md border border-stroke bg-[#353444] py-3 px-6 text-base font-medium text-body-color outline-none transition-all focus:bg-[#454457] focus:shadow-input"
                         />
                       </div>
@@ -258,7 +400,7 @@ export default function CreateEvent() {
                   </div>
                   <div className="mb-5 pt-2">
                     <p className="text-xl font-bold text-white">
-                      Tickets
+                      Ticket Types
                     </p>
                   </div>
                   {tickets.map((item,index)=>(
@@ -268,7 +410,7 @@ export default function CreateEvent() {
                   >
                     <div className="flex items-center justify-end">
                      
-                      <button onClick={(e)=>deleteTicketClass(e,index)} className="text-white">
+                      <button disabled={isSaving }  onClick={(e)=>deleteTicketClass(e,index)} className="text-white">
                       
                         <svg
                           width="10"
@@ -301,12 +443,14 @@ export default function CreateEvent() {
                       Name
                     </label>
                     <input
+                     disabled={isSaving }
+                      onChange={(e)=>nameChanged(e,index)}
                       type="text"
                       name="name"
-
+                      required
                       value={item.name}
                       id="name"
-                      placeholder="Enter event name"
+                      placeholder="Enter ticket name"
                       className="w-full rounded-md border border-stroke bg-[#353444] py-3 px-6 text-base font-medium text-body-color outline-none transition-all focus:bg-[#454457] focus:shadow-input"
                     />
                   </div>
@@ -315,11 +459,16 @@ export default function CreateEvent() {
                       <div className="mb-5">
                         <label
                           for="price"
+                          
                           className="mb-2 block text-base font-medium text-white"
                         >
                           Price
                         </label>
                         <input
+                        onChange={(e)=>priceChanged(e,index)}
+                        disabled={isSaving }
+                          required
+                          min="1"
                           value={item.price}
                           type="number"
                           name="price"
@@ -338,9 +487,14 @@ export default function CreateEvent() {
                           Number of Tickets
                         </label>
                         <input
+                         onChange={(e)=>ticketsChanged(e,index)}
+                         disabled={isSaving }  
                           type="number"
                           name="numTickets"
                           id="numTickets"
+                          required
+                          value={item.numberOfTickets}
+                          min="1"
                           placeholder="100"
                           className="w-full rounded-md border border-stroke bg-[#353444] py-3 px-6 text-base font-medium text-body-color outline-none transition-all focus:bg-[#454457] focus:shadow-input"
                         />
@@ -348,25 +502,40 @@ export default function CreateEvent() {
                       
                     </div>
                   </div>
+                  <div className="mb-12 lg:mb-0">
                   <div className="mb-8">
-                    <label for="file">   <span className='bg-primary py-3 px-8 text-center text-base font-semibold cursor-pointer hover:shadow-form   rounded-md text-white'> Select Picture </span>                   
-             <input
+                    <input
+                      disabled={isSaving }
+                       required={!item.image ? true: false}
                       type="file"
-                      name="file"
-                      id="file"
-                      className='ml-2 file:hidden text-white font-semibold'                 />
-                  </label>
-                   </div>
+                      name={`file${index}`}
+                      id={`file${index}`}
+                      className="sr-only"
+                      onChange={(e)=>ticketImageSelected(e,index)}
+                    />
+                    <label
+                      for={`file${index}`}
+                      className="cursor-pointer relative flex h-[190px] min-h-[50px]  items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
+                    >
+                     <img src={item.image ? item.image: '/images/default-image.jpg'}className="max-h-[160px]"/>
+                    </label>
+                  </div>
+
+            
+
+                 
+                </div>
                  {/* Place Upload Button Here */}
                   </div>
                   
                   </div>))}
                   <div className="pt-2">
                     <button
+                    disabled={isSaving }
                       onClick={addTicketClass}
                       className="hover:shadow-form w-full rounded-md bg-primary py-3 px-8 text-center text-base font-semibold text-white outline-none"
                     >
-                      Add Ticket
+                      Add Ticket Type
                     </button>
                   </div>
                 </div>
@@ -377,6 +546,14 @@ export default function CreateEvent() {
       </div>
     </section>
 
-     <Footer /></main></>
+     <Footer />
+     <Notification
+        type={dialogType}
+        show={show}
+        close={close}
+        title={notificationTitle}
+        description={notificationDescription}
+      />
+     </main></>
      )
      }

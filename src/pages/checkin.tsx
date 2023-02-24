@@ -1,12 +1,78 @@
 import Head from 'next/head'
 import Header from '../components/Header/header'
 import Footer from '@/components/Footer/footer'
-import { QrReader } from 'react-qr-reader';
-import { useState } from 'react';
+import QrReader  from 'react-qr-scanner';
+import { useState,useEffect } from 'react';
+import { XCircleIcon ,CheckCircleIcon} from "@heroicons/react/24/solid";
+function ConfirmCheckIn(props){
+return( <div   className=" m-6 items-center justify-center ">
 
+<h3>
+        <p
+          className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
+        >
+          {props.eventName}
+        </p>
+      </h3>
+      <p><CheckCircleIcon className='inline-block h-[200px] text-[#a3e635]'/></p>
+      <p
+          className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
+        >
+          Confirming Checkin
+        </p>
+
+</div>)
+}
+
+function CheckInError(props){
+    return( <div onClick={props.reloadScanner}   className=" m-6 items-center justify-center ">
+    
+    <h3>
+            <p
+              className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
+            >
+              {props.eventName}
+            </p>
+          </h3>
+          <p><XCircleIcon className='inline-block h-[200px] text-[#ef4444]'/></p>
+          <p
+              className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
+            >
+              {props.error}
+            </p>
+    
+    </div>)
+    }
+    
 export default function CheckIn() {
-  const [data, setData] = useState('No result');
+  const [isLoaded,setIsloaded] = useState()
+  const [isScanned,setIsScanned] = useState()
+  const [isError,setIsError]  = useState()
 
+  const reloadScanner = () =>{
+      setIsError(false)
+      setIsScanned(false)
+  }
+  const handleScan = (data) => {
+    if(data)
+    {
+      console.log(data)
+
+       setIsScanned(true)
+       setIsError(true)
+    }   
+  }
+
+  const handleError = (err) =>{
+     console.log(`This is your error : ${err}`)
+     
+  }
+  const previewStyle = {
+    height: 240,
+    width: 320
+  }
+
+  useEffect(()=>setIsloaded(true),[])
   return (
     <>
       <Head>
@@ -53,29 +119,29 @@ export default function CheckIn() {
         >
           <div className='mt-14'>
           <h2
-                  className="mb-3 text-3xl font-bold text-white sm:mb-0 sm:text-[38px] lg:text-3xl xl:text-[38px]"
+                  className=" mb-3 text-3xl font-bold text-white sm:mb-0 sm:text-[38px] lg:text-3xl xl:text-[38px]"
                 >
                   Scan QR Code
                 </h2>
           </div>
-         <div
-          className=" w-1/4  rounded-lg "
-        >
-          <QrReader
-              ViewFinder={function noRefCheck(){}}
+       
+            <div                       className=" mt-6 mb-14 items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
+>
+         {isLoaded && !isScanned? <div className='container' >
+         <div class='scan-line ml-4 '></div>
+ 
+<QrReader
+style={previewStyle}
 
-        onResult={(result, error) => {
-          if (!!result) {
-            setData(result?.text);
-          }
+delay={500}
 
-          if (!!error) {
-            console.info(error);
-          }
-        }}
-      /></div> 
-      <p>{data}</p>
-          </div>
+             onError={handleError}
+             onScan={handleScan}
+              /></div>: null} {(isScanned && !isError) &&          <ConfirmCheckIn eventName="Ash Wednesday Maracas"/>
+            }
+            {(isScanned && isError) && <CheckInError reloadScanner={reloadScanner} eventName="Ash Wednesday Maracas" error="Can't login to Event"/>
+            }
+            </div> </div>
           </div>
           </section> 
     <Footer />

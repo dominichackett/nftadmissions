@@ -1,6 +1,6 @@
 export const TicketManagerContractAddress =
-  "0x76B4657819EF6C6a6E63A703B8C852174e3b3431";
-export const TicketManagerContractABI = [
+  "0xF40c0B13d395AeA96f053c8f886A3cCE29cC7623";
+export const TicketManagerContractABI =[
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -64,6 +64,11 @@ export const TicketManagerContractABI = [
 			},
 			{
 				"internalType": "string",
+				"name": "tokenName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
 				"name": "_symbol",
 				"type": "string"
 			},
@@ -118,6 +123,11 @@ export const TicketManagerContractABI = [
 				"internalType": "struct TicketManager.ticketClass[]",
 				"name": "_ticketClasses",
 				"type": "tuple[]"
+			},
+			{
+				"internalType": "string",
+				"name": "_uri",
+				"type": "string"
 			}
 		],
 		"name": "createEvent",
@@ -151,6 +161,18 @@ export const TicketManagerContractABI = [
 				"internalType": "uint256",
 				"name": "startdate",
 				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "enddate",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "uri",
+				"type": "string"
 			}
 		],
 		"name": "EventCreated",
@@ -426,113 +448,54 @@ export const TicketManagerContractABI = [
 		"name": "getEvent",
 		"outputs": [
 			{
-				"components": [
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "startdate",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "enddate",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "platformFee",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "nftTickets",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"components": [
-							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "price",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "numberOfTickets",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "mintedTickets",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "refundedTickets",
-								"type": "uint256"
-							},
-							{
-								"internalType": "bool",
-								"name": "isValue",
-								"type": "bool"
-							}
-						],
-						"internalType": "struct TicketManager.ticketClass[]",
-						"name": "ticketClasses",
-						"type": "tuple[]"
-					},
-					{
-						"internalType": "string[]",
-						"name": "metadataURI",
-						"type": "string[]"
-					},
-					{
-						"internalType": "string",
-						"name": "ownerProfile",
-						"type": "string"
-					},
-					{
-						"internalType": "bool",
-						"name": "checkInsAllowed",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "isValue",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "fundsWithdrawn",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "platformFeeWithdrawn",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct TicketManager.Event",
-				"name": "_event",
-				"type": "tuple"
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "startdate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "enddate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_platformFee",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string[]",
+				"name": "metadataURI",
+				"type": "string[]"
 			},
 			{
 				"internalType": "string",
-				"name": "profile",
+				"name": "uri",
 				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "ownerProfile",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "checkInsAllowed",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "fundsWithdrawn",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "platformFeeWithdrawn",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -570,4 +533,4 @@ export const TicketManagerContractABI = [
 		"stateMutability": "view",
 		"type": "function"
 	}
-];
+]
