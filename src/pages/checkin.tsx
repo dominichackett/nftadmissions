@@ -48,6 +48,7 @@ export default function CheckIn() {
   const [isLoaded,setIsloaded] = useState()
   const [isScanned,setIsScanned] = useState()
   const [isError,setIsError]  = useState()
+  const [showScanner,setShowScanner] = useState(false)
 
   const reloadScanner = () =>{
       setIsError(false)
@@ -128,7 +129,7 @@ export default function CheckIn() {
             <div                       className=" mt-6 mb-14 items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
 >
          {isLoaded && !isScanned? <div className='container' >
-         <div class='scan-line ml-4 '></div>
+         { showScanner == true &&<div class='scan-line ml-4 '></div>}
  
 <QrReader
 style={previewStyle}
@@ -137,7 +138,8 @@ delay={500}
 
              onError={handleError}
              onScan={handleScan}
-              /></div>: null} {(isScanned && !isError) &&          <ConfirmCheckIn eventName="Ash Wednesday Maracas"/>
+             onLoad={()=> setShowScanner(true)}
+              /></div>: null} {(isScanned  && !isError) &&          <ConfirmCheckIn eventName="Ash Wednesday Maracas"/>
             }
             {(isScanned && isError) && <CheckInError reloadScanner={reloadScanner} eventName="Ash Wednesday Maracas" error="Can't login to Event"/>
             }

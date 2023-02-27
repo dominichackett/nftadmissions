@@ -140,7 +140,7 @@ function ticketsChanged(event,index){
      const ticketMetadata = await nftstorage.store(ticket)
      metadataURI.push(ticketMetadata.url)
      ticketClasses.push(  [ticket.name,
-       ticket.price,
+       ethers.utils.parseEther(ticket.price),
        ticket.numberOfTickets,
       0,
       0,
