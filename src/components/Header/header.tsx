@@ -140,12 +140,7 @@ import {
                               Check In
                             </a>
 
-                            <a
-                              href="/managecheckin"
-                              className="block rounded py-[10px] px-4 text-sm font-medium text-[#bababa] hover:text-white"
-                            >
-                              Manage Check Ins
-                            </a>
+                          
       
       
                           </div>

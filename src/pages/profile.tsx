@@ -140,7 +140,7 @@ const onSelectFile = (e) => {
       );
       //alert(JSON.stringify(myPolicy))
       let transaction = await contract.setProfile(
-        metadata.url
+        metadata.url,{gasLimit:3000000}
       );
 
       await transaction.wait();

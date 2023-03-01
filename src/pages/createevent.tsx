@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
-import Header from '../components/Header/header'
+import Header from '@/components/Header/header'
 import Footer from '@/components/Footer/footer'
 import { useState,useEffect } from 'react'
 import Notification from '@/components/Notification/Notification'

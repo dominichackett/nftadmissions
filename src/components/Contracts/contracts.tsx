@@ -1,5 +1,5 @@
 export const TicketManagerContractAddress =
-  "0x86009d6f863506d9095323dD461fF47Ae3f96C8c";
+  "0xb1129ba7611562940aAf903f99C6A76A340101c6";
 export const TicketManagerContractABI =
 [
 	{
@@ -491,9 +491,48 @@ export const TicketManagerContractABI =
 				"type": "string"
 			},
 			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
 				"internalType": "bool",
 				"name": "checkInsAllowed",
 				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "fundsWithdrawn",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "platformFeeWithdrawn",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "eventId",
+				"type": "address"
+			}
+		],
+		"name": "getEventFundsTotal",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "funds",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "fee",
+				"type": "uint256"
 			},
 			{
 				"internalType": "bool",

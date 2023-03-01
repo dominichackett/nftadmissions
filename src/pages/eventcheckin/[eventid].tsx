@@ -2,28 +2,26 @@ import Head from 'next/head'
 import Header from '@/components/Header/header'
 import Footer from '@/components/Footer/footer'
 import { useRouter } from 'next/router'
-import { ethers } from 'ethers'
 import { TicketManagerContractAddress,TicketManagerContractABI } from '@/components/Contracts/contracts'
-import { useSigner,useContractRead,useAccount  } from 'wagmi'
-import {useState, useEffect } from 'react'
+import { useSigner,useContractRead  } from 'wagmi'
+import {useRef,useState, useEffect } from 'react'
+import QRCode from "react-qr-code";
+import {ClipboardDocumentIcon}  from  '@heroicons/react/24/solid'
+import {ethers} from 'ethers'
 import Notification from '@/components/Notification/Notification'
 
 export default function EventDetail() {
   const [event,setEvent] = useState()
-  const [ticketReceipts,setTicketReceipts]  = useState()
-  const [platformFees,setPlatformFees]  = useState()
-  const [fundsWithdrawn,setFundsWithdrawn]  = useState(true)
   const [refreshData,setRefresData] = useState(new Date())
-  const [isWidthdrawing,setIsWithdrawing] = useState(false)
+  const [settiingCheckin,setSettingCheckin] = useState(false)
   const { data: signer} = useSigner()
   const router  = useRouter()
   const {eventid} = router.query  
   const [profile,setProfile] = useState()
   const [tickets,setTickets] = useState([])
-  const {address} = useAccount()
   const [selectedFile,setSelectedFile]  = useState()
   const [preview, setPreview] = useState()
-  const [isPurchasing,setIsPurchasing] = useState()
+  const svgRef = useRef(null);
 
   const contractReadEvent= useContractRead({
     address:TicketManagerContractAddress,
@@ -34,9 +32,8 @@ export default function EventDetail() {
     
   })
 
-  
 
-// NOTIFICATIONS functions
+  // NOTIFICATIONS functions
 const [notificationTitle, setNotificationTitle] = useState();
 const [notificationDescription, setNotificationDescription] = useState();
 const [dialogType, setDialogType] = useState(1);
@@ -44,6 +41,7 @@ const [show, setShow] = useState(false);
 const close = async () => {
   setShow(false);
 };
+
 
   useEffect(()=>{
     async function getEvent(){
@@ -62,7 +60,7 @@ const close = async () => {
     }
    if (eventid)
      getEvent() 
-  },[eventid])
+  },[eventid,refreshData])
 
   useEffect(()=>{
     async function getProfile() {
@@ -97,24 +95,7 @@ const close = async () => {
   ,[event])
 
 
-//Get Funds for dashboard if user is owner of the event  
-useEffect(()=>{
- async function getFunds(){
-   try {
-        const contract = new ethers.Contract(TicketManagerContractAddress,TicketManagerContractABI,signer)   
-        const data = await contract.getEventFundsTotal(eventid)
-        console.log(data)
-        setFundsWithdrawn(data.fundsWithdrawn)
-        setTicketReceipts(ethers.utils.formatEther(data.funds))
-        setPlatformFees(ethers.utils.formatEther(data.fee)) 
-      }catch(error){
-         console.log(error)
-   }
- }
 
- if(event && event.owner == address)
-    getFunds()
-},[event,refreshData])
   
     // create a preview as a side effect, whenever selected file is changed
  useEffect(() => {
@@ -151,30 +132,69 @@ useEffect(()=>{
     getTickets()
 },[event])
 
-//Purchase Ticket
-const purchaseTicket = async (ticketId)=>
-{
+const copyToClipboard = async () => {
+  const svg = svgRef.current;
+  const svgData = new XMLSerializer().serializeToString(svg);
+
+  // create a canvas element
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  // create an image element from the SVG data
+  const img = new Image();
+  img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+
+  // wait for the image to load
+  await new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = reject;
+  });
+
+  // set the canvas size to the image size
+  canvas.width = img.width;
+  canvas.height = img.height;
+
+  // draw the image onto the canvas
+  ctx.drawImage(img, 0, 0);
+
+  // convert the canvas to a Blob
+  canvas.toBlob((blob) => {
+    const clipboardData = [
+      new ClipboardItem({
+        [blob.type]: blob
+      })
+    ];
+    navigator.clipboard.write(clipboardData);
+
+  });  
+};
+
+
+const setCheckIns = async() =>{
+   
   try {
-    const contract = new ethers.Contract(
+     const contract = new ethers.Contract(
       TicketManagerContractAddress,
       TicketManagerContractABI,
       signer
     );
-    
-
-    let tx = await contract.callStatic.mintTicket(eventid,ticketId,{
-      value:ethers.utils.parseEther(tickets[ticketId].price),gasLimit: 3000000})
+     
+    const checkIn = event.checkInsAllowed
+   
+    let tx = await contract.callStatic.setCheckIns(eventid,!event.checkInsAllowed,{
+      gasLimit: 3000000})
       
-    let transaction = await contract.mintTicket(eventid,ticketId,{
-      value:ethers.utils.parseEther(tickets[ticketId].price),gasLimit: 3000000})
+    let transaction = await contract.setCheckIns(eventid,!event.checkInsAllowed,{
+gasLimit: 3000000})
       
     
     await transaction.wait();
         setDialogType(1) //Success
-        setNotificationTitle("Purchase Ticket")
-        setNotificationDescription("Ticket Purchased.")
+        setNotificationTitle("Checkin")
+        setNotificationDescription(`${checkIn==true ? 'Check in Disabled':  'Check in Enabled'}`)
         setShow(true)
-        setIsPurchasing(false)
+        setSettingCheckin(false)
+        setRefresData(new Date())         
         
     
   } catch (error) {
@@ -193,68 +213,15 @@ const purchaseTicket = async (ticketId)=>
   
 }
     setDialogType(2) //Error
-    setNotificationTitle("Purchase Ticket Error")
-
+    setNotificationTitle("Check in Error")
+    setSettingCheckin(false)
     setShow(true)
-    setIsPurchasing(false)
 
 
   }
 
 
 }
-
-const withdrawFunds = async () =>{
-  setIsWithdrawing(true)
-  try {
-    const contract = new ethers.Contract(
-      TicketManagerContractAddress,
-      TicketManagerContractABI,
-      signer
-    );
-    
-
-    let tx = await contract.callStatic.widthdrawFunds(eventid,{
-      gasLimit: 3000000})
-      
-    let transaction = await contract.widthdrawFunds(eventid,{
-      gasLimit: 3000000})
-      
-    
-    await transaction.wait();
-        setDialogType(1) //Success
-        setNotificationTitle("Withdraw Ticket Receipts")
-        setNotificationDescription("Funds successfully withdrawn.")
-        setShow(true)
-        setIsWithdrawing(false)
-        
-    
-  } catch (error) {
-
-   
-    if (error.code === 'TRANSACTION_REVERTED') {
-      console.log('Transaction reverted');
-      let revertReason = ethers.utils.parseRevertReason(error.data);
-      setNotificationDescription(revertReason);
-    }  else if (error.code === 'ACTION_REJECTED') {
-    setNotificationDescription('Transaction rejected by user');
-  }else {
-   console.log(error)
-   //const errorMessage = ethers.utils.revert(error.reason);
-    setNotificationDescription(`Transaction failed with error: ${error.reason}`);
-  
-}
-    setDialogType(2) //Error
-    setNotificationTitle("Purchase Ticket Error")
-
-    setShow(true)
-    setIsWithdrawing(false)
-
-
-  }
-
-}
-
 return (
     <>
       <Head>
@@ -289,7 +256,7 @@ return (
             <li
               className="flex items-center text-base font-medium text-white"
             >
-              Event Details
+              Event Check In
             </li>
           </ul>
         </div>
@@ -300,109 +267,46 @@ return (
         <div className="-mx-4 flex flex-wrap">
           <div className=" w-full px-4 lg:w-1/2 ">
             <div
-              className="max-h-[480px] min-h-[480px] mb-12  flex  w-full items-center justify-center rounded-xl border border-stroke bg-bg-color py-8 sm:py-14 md:py-24 lg:mb-0 lg:py-16 xl:py-28"
+              className="relative max-h-[480px] min-h-[480px] mb-12  flex  w-full items-center justify-center rounded-xl border border-stroke bg-white py-8 sm:py-14 md:py-24 lg:mb-0 lg:py-16 xl:py-28"
             >
-              <img 
-              className='max-h-[440px] '
-              src={event?.image ? event.image : '/images/default-image.jpg'}  alt="details image" />
-            </div>
+              <div className="absolute top-2 right-2" ><ClipboardDocumentIcon title="Click to Copy" onClick={copyToClipboard}  className='hover:text-[#64748b] cursor-pointer text-[#cbd5e1]  h-[30px]' /></div>
+               {event && <div style={{  height: "auto", margin: "0 auto", maxWidth: 128, width: "100%" }}>
+<QRCode
+    size={256}
+    style={{height: "auto", maxWidth: "100%", width: "100%",cursor:"pointer" }}
+    value={JSON.stringify({eventid:eventid,name:event.name})}
+    viewBox={`0 0 256 256`}
+    title="Click to Copy"
+    ref={svgRef}
+    onClick={copyToClipboard}
+    /><div className='mt-5'>Scan to Check in</div></div>}
+      </div>
 
-            {event?.owner && event?.owner== address && <div className="mt-6 mb-4 justify-between sm:flex">
-                <h2
-                  className="mb-3 mt-3 text-2xl font-bold text-white sm:mb-0 sm:text-[34px] lg:text-2xl xl:text-[34px]"
-                >
-                  Dashboard
-                </h2>
-                
-              </div>}
 
+           
+      <div className="mt-6 rounded-md bg-[#4E4C64] py-4 px-8">
+                   
+                   <div className="pt-2">
+                      <button
+                       onClick={setCheckIns}
+                       disabled={settiingCheckin}
+                       title={event?.checkInsAllowed ==true? 'Click to Disable': 'Click to Enable' }
 
-              {event?.owner && event?.owner== address &&<div
-                className="mb-8 overflow-hidden rounded-lg border border-stroke bg-bg-color"
-              >
-                <div
-                  className="flex w-full flex-wrap items-center border-b border-stroke px-1 pb-4 pt-1"
-                >
-                 
-
-              
-                  <div className="px-[6px] pt-3">
-                    <button
-                    disabled={fundsWithdrawn == true || ticketReceipts==0 || isWidthdrawing }
-                    onClick={withdrawFunds}
-                      className="rounded-md border border-stroke py-2 px-5 text-base font-semibold text-white hover:border-primary hover:bg-primary"
-                    >
-                      Widthdraw
-                    </button>
-                  </div>
-                  <div className="px-[6px] pt-3">
-                    <a
-                      href={`/eventcheckin/${eventid}`}
-                      className="rounded-md border border-stroke py-2 px-5 text-base font-semibold text-white hover:border-primary hover:bg-primary"
-                    >
-                      Check Ins
-                    </a>
-                  </div>
-                </div>
-
-                <div className="py-2">
-                  <div
-                    className="flex justify-between py-[10px] px-4 transition hover:bg-stroke"
-                  >
-                    <div className="flex items-center">
-                     
-                      <div className="w-full">
-                        <h4 className="text-sm font-semibold text-white">
-                          Ticket Receipts
-
-                          <span
-                            class="block text-sm font-medium text-body-color"
-                          >
-                            Available
-                          </span>
-                        </h4>
-                      </div>
-                    </div>
-                    <div class="text-right">
-                      <h5 class="text-sm font-semibold text-white">
-                        {ticketReceipts} FTM
-
-                        <span
-                          class="block text-sm font-medium text-body-color"
-                        >
-                          {fundsWithdrawn == false && ticketReceipts > 0 ? 'Yes': 'No' }
-                        </span>
-                      </h5>
-                    </div>
-                  </div>
-                  <div
-                    class="flex justify-between py-[10px] px-4 transition hover:bg-stroke"
-                  >
-                    <div class="flex items-center">
+                       className={` ${event?.checkInsAllowed==true ? 'bg-[#4ade80]' :'bg-[#ef4444]' }  hover:shadow-form w-full rounded-md  py-3 px-8 text-center text-base font-semibold text-white outline-none`}
+                     >  
+                         {event?.checkInsAllowed==true ? 'Check in Enabled' : 'Check in Disabled'}
+                     </button>
+ 
                     
-                      <div class="w-full">
-                        <h4 class="text-sm font-semibold text-white">
-                          Platform Fees
+                   </div>                    
+                    
+                   </div>
 
-                         
-                        </h4>
-                      </div>
-                    </div>
-                    <div class="text-right">
-                      <h5 class="text-sm font-semibold text-white">
-                        {platformFees} FTM
-
-                       
-                      </h5>
-                    </div>
-                  </div>
-                 
-                </div>
-              </div> } 
+            
             
           </div>
           
-
+         
           <div className="w-full px-4 lg:w-1/2">
             <div className="xl:pl-8">
               <div className="mb-9 justify-between sm:flex">
@@ -554,18 +458,7 @@ return (
 
                     </div>
 
-              <div
-                  className="-5 flex w-full flex-wrap items-center border-b border-stroke px-5 pb-4 pt-1"
-                >
-                
-                  <button
-                className="w-full items-center justify-center rounded-md bg-primary p-[14px] text-base font-semibold text-white hover:bg-opacity-90"
-                onClick={()=>purchaseTicket(index)}
-              >
-               Purchase
-              </button>
-                 
-                </div>
+              
               </div>
               )}
             </div>
@@ -575,13 +468,12 @@ return (
         
       </div>
     </section>
-     <Footer /></main>
-     <Notification
+     <Footer /> <Notification
         type={dialogType}
         show={show}
         close={close}
         title={notificationTitle}
         description={notificationDescription}
-      />
+      /></main>
      </>)
      }

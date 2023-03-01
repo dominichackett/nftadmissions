@@ -6,7 +6,7 @@ import { NFTTicketContractABI,TicketManagerContractAddress,TicketManagerContract
 import { useSigner,useContractRead,useAccount  } from 'wagmi'
 import {useState, useEffect } from 'react'
 import Notification from '@/components/Notification/Notification'
-
+import SearchBar from '@/components/SearchBar/searchbar'
 export default function Tickets() {
   const [tickets,setTickets] = useState([])
   const [refreshData,setRefresData] = useState(new Date())
@@ -71,6 +71,15 @@ useEffect(()=>{
 },[signer])
   const refundTicket = async(eventid,ticketid) =>{
     try {
+
+      const nftContract =  new ethers.Contract(eventid,NFTTicketContractABI,signer)
+      let trans =  await nftContract.callStatic.setApprovalForAll(TicketManagerContractAddress,true,{
+        gasLimit: 3000000})
+      
+      let trans2 =  await nftContract.setApprovalForAll(TicketManagerContractAddress,true,{
+          gasLimit: 3000000})
+      await trans2.wait()      
+          
       const contract = new ethers.Contract(
         TicketManagerContractAddress,
         TicketManagerContractABI,
@@ -158,102 +167,13 @@ useEffect(()=>{
     </section>
     <section className="pt-8 pb-24">
       <div className="container">
-        <div
-          className="mb-14 rounded-lg border-2 border-stroke py-4 px-5"
-        >
-          <div
-            className="-mx-4 flex flex-wrap items-center justify-between"
-          >
-            <div className="w-full px-4 lg:w-7/12">
-              <div
-                className="flex space-x-3 overflow-x-auto pb-8 lg:pb-0"
-              >
-                <button
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md bg-[#353444] py-[10px] px-5 text-base font-semibold text-white transition-all hover:bg-primary"
-                >
-                  All
-                </button>
-                <button
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md bg-[#353444] py-[10px] px-5 text-base font-semibold text-white transition-all hover:bg-primary"
-                >
-                  Digital Art
-                </button>
-                <button
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md bg-[#353444] py-[10px] px-5 text-base font-semibold text-white transition-all hover:bg-primary"
-                >
-                  Music
-                </button>
-                <button
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md bg-[#353444] py-[10px] px-5 text-base font-semibold text-white transition-all hover:bg-primary"
-                >
-                  3D Illustration
-                </button>
-              </div>
-            </div>
-            <div className="w-full px-4 lg:w-5/12">
-              <div className="flex space-x-3 lg:justify-end">
-                <div className="relative inline-flex">
-                  <select
-                    className="appearance-none rounded-md bg-[#353444] py-3 pl-5 pr-10 text-base font-semibold text-white outline-none"
-                  >
-                    <option value="">All Artworks</option>
-                    <option value="">Digital</option>
-                    <option value="">Illustration</option>
-                  </select>
-                  <span
-                    className="absolute right-5 top-1/2 -translate-y-1/2"
-                  >
-                    <svg
-                      width="12"
-                      height="8"
-                      viewBox="0 0 12 8"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.41 0.580078L6 5.17008L10.59 0.580078L12 2.00008L6 8.00008L0 2.00008L1.41 0.580078Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </span>
-                </div>
-                <div className="relative inline-flex">
-                  <select
-                    className="appearance-none rounded-md bg-[#353444] py-3 pl-5 pr-10 text-base font-semibold text-white outline-none"
-                  >
-                    <option value="" selected>Sort By</option>
-                    <option value="">Top rate</option>
-                    <option value="">Mid rate</option>
-                    <option value="">Low rate</option>
-                  </select>
-                  <span
-                    className="absolute right-5 top-1/2 -translate-y-1/2"
-                  >
-                    <svg
-                      width="12"
-                      height="8"
-                      viewBox="0 0 12 8"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.41 0.580078L6 5.17008L10.59 0.580078L12 2.00008L6 8.00008L0 2.00008L1.41 0.580078Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <SearchBar />
         <div className="-mx-4 flex flex-wrap">
          {tickets.map((item,index)=> <div className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
             <div
               className="mb-10 rounded-xl border border-stroke bg-bg-color p-[18px]"
             >
-              <div className="max-h-[290px] min-h-[290px] relative mb-5  rounded-lg">
+              <div className="max-h-[290px] min-h-[290px] relative   rounded-lg">
               <a
                  href={`/eventdetail/${item.eventId}`}>
                 <img
@@ -288,12 +208,12 @@ useEffect(()=>{
               <div>
                 <h3>
                   <span
-                    className="mt-5  inline-block text-lg font-semibold text-white "
+                    className=" inline-block text-lg font-semibold text-white "
                   >
                     {item.eventName}
                   </span>
                 </h3>
-                <div className="mb-6 flex items-center justify-between">
+                <div className="mb-2 flex items-center justify-between">
 
                 <div className="w-full">
                         <h4 className=" text-sm font-semibold text-white">

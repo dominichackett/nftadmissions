@@ -3,18 +3,45 @@ import Header from '../components/Header/header'
 import Footer from '@/components/Footer/footer'
 import QrReader  from 'react-qr-scanner';
 import { useState,useEffect } from 'react';
-import { XCircleIcon ,CheckCircleIcon} from "@heroicons/react/24/solid";
+import { XCircleIcon ,CheckCircleIcon,QuestionMarkCircleIcon} from "@heroicons/react/24/solid";
+import { ethers } from 'ethers';
+import { TicketManagerContractAddress,TicketManagerContractABI } from '@/components/Contracts/contracts'
+import { useSigner  } from 'wagmi'
+
+function CheckInSuccess(props){
+  return( <div   className=" m-6 items-center justify-center ">
+  
+  <h3>
+          <p
+            className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
+          >
+            {props.event.name}
+          </p>
+        </h3>
+        <p><CheckCircleIcon className='inline-block h-[200px] text-[#a3e635]'/></p>
+        <p
+            className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
+          >
+            Checkin Successful 
+          </p>
+  
+  </div>)
+  }
+  
 function ConfirmCheckIn(props){
+useEffect(()=>{
+   props.callback()
+},[])
 return( <div   className=" m-6 items-center justify-center ">
 
 <h3>
         <p
           className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
         >
-          {props.eventName}
+          {props.event.name}
         </p>
       </h3>
-      <p><CheckCircleIcon className='inline-block h-[200px] text-[#a3e635]'/></p>
+      <p><QuestionMarkCircleIcon className='inline-block h-[200px] text-[#60a5fa]'/></p>
       <p
           className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
         >
@@ -26,12 +53,18 @@ return( <div   className=" m-6 items-center justify-center ">
 
 function CheckInError(props){
     return( <div onClick={props.reloadScanner}   className=" m-6 items-center justify-center ">
-    
+     {props.event?.name && <><h3>
+          <p
+            className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
+          >
+            {props?.event?.name}
+          </p>
+        </h3></>}
     <h3>
             <p
-              className="mt-5 mb-3 inline-block text-lg font-semibold text-white "
+              className="mt-2 mb-3 inline-block text-lg font-semibold text-white "
             >
-              {props.eventName}
+              {props.errorString}
             </p>
           </h3>
           <p><XCircleIcon className='inline-block h-[200px] text-[#ef4444]'/></p>
@@ -45,11 +78,15 @@ function CheckInError(props){
     }
     
 export default function CheckIn() {
+  const { data: signer} = useSigner()
+
   const [isLoaded,setIsloaded] = useState()
   const [isScanned,setIsScanned] = useState()
   const [isError,setIsError]  = useState()
   const [showScanner,setShowScanner] = useState(false)
-
+  const [errorString,setErrorString] = useState()
+  const [event,setEvent] = useState()
+  const [checkedIn,setCheckedIn] = useState(false)
   const reloadScanner = () =>{
       setIsError(false)
       setIsScanned(false)
@@ -59,21 +96,88 @@ export default function CheckIn() {
     {
       console.log(data)
 
-       setIsScanned(true)
-       setIsError(true)
-    }   
+       let _event =""
+      setIsScanned(true)
+      try
+      {
+           _event = JSON.parse(data?.text)
+      
+          if(!_event?.eventid || !ethers.utils.isAddress(_event?.eventid) || !_event?.name)
+          {
+              throw new Error("Qr Code is not valid.")
+              
+          }
+      }catch(_error)
+      {      
+        setIsError(true)
+        setErrorString("Qr Code is not valid.")
+        return
+          
+      }
+      setEvent(_event)
+    } 
   }
 
   const handleError = (err) =>{
-     console.log(`This is your error : ${err}`)
-     
+    setIsError(true)
+    setErrorString("Qr Code is not valid.")
+  
   }
+  
+
   const previewStyle = {
     height: 240,
     width: 320
   }
 
   useEffect(()=>setIsloaded(true),[])
+  
+  
+  //Check into event
+  const checkInToEvent= async () => {
+    setI
+    try {
+      const contract = new ethers.Contract(
+       TicketManagerContractAddress,
+       TicketManagerContractABI,
+       signer
+     );
+      
+   const filter =  contract.filters.TicketMinted(await signer?.getAddress(),event.eventid,null,null)
+   const results = await contract?.queryFilter(filter,0,'latest');
+    if(results.length <= 0)
+       throw new Error("You do not have a ticket for this event.")
+      
+     let tx = await contract.callStatic.checkInToEvent(event.eventid,results[0].args.ticketId,{
+       gasLimit: 3000000})
+       
+     let transaction = await contract.checkInToEvent(event.eventid,results[0].args.ticketId,{
+ gasLimit: 3000000})
+       
+     
+     await transaction.wait();
+         setCheckedIn(true)     
+         
+     
+   } catch (error) {
+ 
+    
+     if (error.code === 'TRANSACTION_REVERTED') {
+       console.log('Transaction reverted');
+       let revertReason = ethers.utils.parseRevertReason(error.data);
+       setErrorString(revertReason);
+     }  else if (error.code === 'ACTION_REJECTED') {
+     setErrorString('Transaction rejected by user');
+   }else {
+    console.log(error)
+    //const errorMessage = ethers.utils.revert(error.reason);
+     setErrorString(`${error.reason}`);
+   
+ }
+     setIsError(true) 
+   }
+ 
+  }
   return (
     <>
       <Head>
@@ -139,10 +243,11 @@ delay={500}
              onError={handleError}
              onScan={handleScan}
              onLoad={()=> setShowScanner(true)}
-              /></div>: null} {(isScanned  && !isError) &&          <ConfirmCheckIn eventName="Ash Wednesday Maracas"/>
+              /></div>: null} {(isScanned  && !isError && !checkedIn) &&          <ConfirmCheckIn callback={checkInToEvent} event={event}/>
             }
-            {(isScanned && isError) && <CheckInError reloadScanner={reloadScanner} eventName="Ash Wednesday Maracas" error="Can't login to Event"/>
+            {(isScanned && isError) && <CheckInError event={event} reloadScanner={reloadScanner} errorString={errorString} error="Can't login to Event"/>
             }
+            {checkedIn && <CheckInSuccess  event={event}/>}
             </div> </div>
           </div>
           </section> 
