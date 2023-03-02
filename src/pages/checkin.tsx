@@ -238,7 +238,7 @@ export default function CheckIn() {
  
 <QrReader
 style={previewStyle}
-facingMode="rear"
+facingMode="front"
 delay={500}
 
              onError={handleError}
