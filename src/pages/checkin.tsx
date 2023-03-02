@@ -87,6 +87,7 @@ export default function CheckIn() {
   const [errorString,setErrorString] = useState()
   const [event,setEvent] = useState()
   const [checkedIn,setCheckedIn] = useState(false)
+  const [isCheckingIn, setIsCheckingIn] = useState(false)
   const reloadScanner = () =>{
       setIsError(false)
       setIsScanned(false)
@@ -135,7 +136,7 @@ export default function CheckIn() {
   
   //Check into event
   const checkInToEvent= async () => {
-    setI
+  
     try {
       const contract = new ethers.Contract(
        TicketManagerContractAddress,
