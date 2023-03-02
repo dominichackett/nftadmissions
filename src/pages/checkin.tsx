@@ -1,14 +1,14 @@
 import Head from 'next/head'
 import Header from '../components/Header/header'
 import Footer from '@/components/Footer/footer'
-import QrReader  from 'react-qr-scanner';
+import QrReader  from 'react-qr-reader';
 import { useState,useEffect } from 'react';
 import { XCircleIcon ,CheckCircleIcon,QuestionMarkCircleIcon} from "@heroicons/react/24/solid";
 import { ethers } from 'ethers';
 import { TicketManagerContractAddress,TicketManagerContractABI } from '@/components/Contracts/contracts'
 import { useSigner  } from 'wagmi'
 import Link from 'next/link';
-function CheckInSuccess(props){
+function CheckInSuccess(props:any){
   return( <div   className=" m-6 items-center justify-center ">
   
   <h3>
@@ -28,7 +28,7 @@ function CheckInSuccess(props){
   </div>)
   }
   
-function ConfirmCheckIn(props){
+function ConfirmCheckIn(props:any){
 useEffect(()=>{
    props.callback()
 },[])
@@ -51,7 +51,7 @@ return( <div   className=" m-6 items-center justify-center ">
 </div>)
 }
 
-function CheckInError(props){
+function CheckInError(props:any){
     return( <div onClick={props.reloadScanner}   className=" m-6 items-center justify-center ">
      {props.event?.name && <><h3>
           <p
@@ -80,11 +80,11 @@ function CheckInError(props){
 export default function CheckIn() {
   const { data: signer} = useSigner()
 
-  const [isLoaded,setIsloaded] = useState()
-  const [isScanned,setIsScanned] = useState()
-  const [isError,setIsError]  = useState()
+  const [isLoaded,setIsloaded] = useState(false)
+  const [isScanned,setIsScanned] = useState(false)
+  const [isError,setIsError]  = useState(false)
   const [showScanner,setShowScanner] = useState(false)
-  const [errorString,setErrorString] = useState()
+  const [errorString,setErrorString] = useState("")
   const [event,setEvent] = useState()
   const [checkedIn,setCheckedIn] = useState(false)
   const [isCheckingIn, setIsCheckingIn] = useState(false)
@@ -92,12 +92,12 @@ export default function CheckIn() {
       setIsError(false)
       setIsScanned(false)
   }
-  const handleScan = (data) => {
+  const handleScan = (data:any) => {
     if(data)
     {
       console.log(data)
 
-       let _event =""
+       let _event 
       setIsScanned(true)
       try
       {
@@ -119,7 +119,7 @@ export default function CheckIn() {
     } 
   }
 
-  const handleError = (err) =>{
+  const handleError = (err:any) =>{
     setIsError(true)
     setErrorString("Qr Code is not valid.")
   
@@ -141,7 +141,7 @@ export default function CheckIn() {
       const contract = new ethers.Contract(
        TicketManagerContractAddress,
        TicketManagerContractABI,
-       signer
+       signer?.provider
      );
       
    const filter =  contract.filters.TicketMinted(await signer?.getAddress(),event.eventid,null,null)
