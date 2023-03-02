@@ -238,9 +238,10 @@ export default function CheckIn() {
  
 <QrReader
 style={previewStyle}
-constraints={{
-  facingMode: 'environment'
-}}
+
+
+  facingMode= 'environment'
+
 delay={500}
 
              onError={handleError}
