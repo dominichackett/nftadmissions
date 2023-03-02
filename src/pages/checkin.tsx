@@ -92,8 +92,12 @@ export default function CheckIn() {
       setIsError(false)
       setIsScanned(false)
   }
-  const handleScan = (data:any) => {
-    if(data)
+  const handleScan = (data:any,error:any) => {
+   
+    console.log(error)
+    console.log(data)
+    
+    if(data != undefined)
     {
       console.log(data)
 
@@ -127,7 +131,7 @@ export default function CheckIn() {
   
 
   const previewStyle = {
-    height: 240,
+    height: 320,
     width: 320
   }
 
