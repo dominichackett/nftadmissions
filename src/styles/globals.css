@@ -13,16 +13,17 @@
 /* Set the container div */
 .container {
   position: relative;
+ 
 }
 
 /* Create the scan line */
 .scan-line {
   position: absolute;
-  width: 320px;
   height: 5px;
   background-color: transparent;
   border-bottom: 1px solid red;  top: 0px;
   left: 0;
+  right:0px;
   animation: scan 2s linear infinite;
 }
 

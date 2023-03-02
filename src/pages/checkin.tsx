@@ -234,11 +234,11 @@ export default function CheckIn() {
             <div                       className=" mt-6 mb-14 items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
 >
          {isLoaded && !isScanned? <div className='container' >
-         { showScanner == true &&<div class='scan-line ml-4 '></div>}
+         { showScanner == true &&<div className='scan-line mx-6'></div>}
  
 <QrReader
 style={previewStyle}
-
+constrraints={ {facingMode: 'environment'} }
 delay={500}
 
              onError={handleError}
