@@ -153,9 +153,16 @@ import Link from 'next/link';
                             Support
                           </Link>
                         </li>
+                      
+                           
+                    
+                      
                       </ul>
                     </nav>
+
                   </div>
+                  
+
                   <div
                     className="hidden justify-end pr-16 sm:flex lg:pr-0"
                   >
@@ -209,7 +216,13 @@ import Link from 'next/link';
                       </div>
                     </div>
                    {/* Sign In Button*/}
-                   <ConnectButton />
-                  </div>
+                   
+                  </div>       
+                  <div       className="mr-16 flex py-2 
+                       text-base font-semibold text-[#bababa] group-hover:text-white 
+                    lg:mr-0 lg:ml-6 lg:inline-flex lg:py-6 lg:px-0 xl:ml-6"
+                      > 
+                        <ConnectButton  /> </div>
+
            </div></div>  </header>)
 }

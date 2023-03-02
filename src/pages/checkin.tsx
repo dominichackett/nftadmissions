@@ -141,7 +141,7 @@ export default function CheckIn() {
       const contract = new ethers.Contract(
        TicketManagerContractAddress,
        TicketManagerContractABI,
-       signer?.provider
+       signer
      );
       
    const filter =  contract.filters.TicketMinted(await signer?.getAddress(),event.eventid,null,null)
