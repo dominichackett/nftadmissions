@@ -97,7 +97,7 @@ export default function CheckIn() {
     console.log(error)
     console.log(data)
     
-    if(data != undefined)
+    if(data)
     {
       console.log(data)
 
@@ -140,7 +140,7 @@ export default function CheckIn() {
   
   //Check into event
   const checkInToEvent= async () => {
-  
+   alert(JSON.stringify(event))
     try {
       const contract = new ethers.Contract(
        TicketManagerContractAddress,
@@ -247,7 +247,7 @@ delay={500}
 
              onError={handleError}
              onResult={handleScan}
-             //onLoad={()=>alert(true)}
+             onLoad={()=>alert(true)}
               /> { showScanner == true &&<div className='scan-line mx-10'></div>}
               </div>: null} {(isScanned  && !isError && !checkedIn) &&          <ConfirmCheckIn callback={checkInToEvent} event={event}/>
             }
