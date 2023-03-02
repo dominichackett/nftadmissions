@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Header from '../components/Header/header'
 import Footer from '@/components/Footer/footer'
-import {QrReader}  from 'react-qr-reader';
+import QrReader  from 'react-qr-scanner';
 import { useState,useEffect } from 'react';
 import { XCircleIcon ,CheckCircleIcon,QuestionMarkCircleIcon} from "@heroicons/react/24/solid";
 import { ethers } from 'ethers';
@@ -240,7 +240,7 @@ export default function CheckIn() {
 style={previewStyle}
 
 
- constraints= {{ facingMode: 'environment'}}
+  facingMode= {'environment'}
 
 delay={500}
 

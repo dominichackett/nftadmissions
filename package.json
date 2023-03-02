@@ -21,6 +21,7 @@
     "eslint-config-next": "13.1.6",
     "ethers": "5",
     "iron-session": "^6.3.1",
+    "modern-react-qr-reader": "^1.0.12",
     "next": "13.1.6",
     "next-auth": "^4.19.2",
     "nft.storage": "^7.0.0",
