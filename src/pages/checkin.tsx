@@ -7,7 +7,7 @@ import { XCircleIcon ,CheckCircleIcon,QuestionMarkCircleIcon} from "@heroicons/r
 import { ethers } from 'ethers';
 import { TicketManagerContractAddress,TicketManagerContractABI } from '@/components/Contracts/contracts'
 import { useSigner  } from 'wagmi'
-
+import Link from 'next/link';
 function CheckInSuccess(props){
   return( <div   className=" m-6 items-center justify-center ">
   
@@ -201,12 +201,12 @@ export default function CheckIn() {
             <li
               className="flex items-center text-base font-medium text-white"
             >
-              <a
+              <Link
                 href="/"
                 className="text-white hover:text-primary"
               >
                 Home
-              </a>
+              </Link>
               <span className="px-3"> / </span>
             </li>
             <li

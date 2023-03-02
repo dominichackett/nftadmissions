@@ -10,7 +10,7 @@ import {
   import { useRouter } from 'next/router'
 
   import { useSession } from "next-auth/react"
-
+import Link from 'next/link';
   export default function Header(){
     const [navbarOpen,setNavbarOpen] = useState(false)
     const [submenuOpen,setSubmenuOpen] = useState(false)
@@ -38,7 +38,7 @@ import {
                <div className="w-90 max-w-full px-4">
                <div className="flex items-center">
 
-                  <a
+                  <Link
                     href="index.html"
                     className="header-logo block"
                   >
@@ -47,7 +47,7 @@ import {
                       alt="logo"
                       className="h-10"
                     />
-                  </a>
+                  </Link>
                   <h1
                 className="ml-2 text-[20px] font-bold leading-tight text-white md:text-[25px] lg:text-[40px] xl:text-[23px] 2xl:text-[25px] sm:text-[23px]"
               >
@@ -84,61 +84,61 @@ import {
                     >
                       <ul className="blcok lg:flex">
                         <li className="group relative">
-                          <a
+                          <Link
                             href="/"
                             className="mx-8 flex py-2 text-base font-semibold text-white group-hover:text-white lg:mr-0 lg:inline-flex lg:py-6 lg:px-0"
                           >
                             Home
-                          </a>
+                          </Link>
                         </li>
                         { session &&    <li className="group relative">
-                          <a
+                          <Link
                             href="/events"
                             className="mx-8 flex py-2 text-base font-semibold text-[#bababa] group-hover:text-white lg:mr-0 lg:ml-8 lg:inline-flex lg:py-6 lg:px-0 xl:ml-12"
                           >
                             Events
-                          </a>
+                          </Link>
                         </li>}
 
                        
       
                        { session &&<li className="group submenu-item relative">
-                          <a
+                          <Link
                             href="javascript:void(0)"
                             onClick={()=> setSubmenuOpen(!submenuOpen)}
                             className="relative mx-8 flex py-2 text-base font-semibold text-[#bababa] after:absolute after:right-1 after:top-1/2 after:mt-[-2px] after:h-2 after:w-2 after:translate-y-[-50%] after:rotate-45 after:border-b-2 after:border-r-2 after:border-current group-hover:text-white lg:mr-0 lg:ml-8 lg:inline-flex lg:py-6 lg:pl-0 lg:pr-4 lg:after:right-0 xl:ml-12"
                           >
                             My Account
-                          </a>
+                          </Link>
                           <div
                             className={`${submenuOpen ? 'block' : 'hidden'} submenu relative top-full left-0 w-[250px] rounded-md bg-dark p-4 transition-[top] duration-300 group-hover:opacity-100 lg:invisible lg:absolute lg:top-[110%] lg:block lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full `}
                             
                           >
-                             <a
+                             <Link
                               href="/profile"
                               className="block rounded py-[10px] px-4 text-sm font-medium text-[#bababa] hover:text-white"
                             >
                               Profile
-                            </a>
-                            <a
+                            </Link>
+                            <Link
                               href="/myevents"
                               className="block rounded py-[10px] px-4 text-sm font-medium text-[#bababa] hover:text-white"
                             >
                               My Events
-                            </a>
+                            </Link>
       
-                            <a
+                            <Link
                               href="/tickets"
                               className="block rounded py-[10px] px-4 text-sm font-medium text-[#bababa] hover:text-white"
                             >
                               Tickets
-                            </a>
-                            <a
+                            </Link>
+                            <Link
                               href="/checkin"
                               className="block rounded py-[10px] px-4 text-sm font-medium text-[#bababa] hover:text-white"
                             >
                               Check In
-                            </a>
+                            </Link>
 
                           
       
@@ -146,12 +146,12 @@ import {
                           </div>
                         </li>}
                         <li className="group relative">
-                          <a
+                          <Link
                             href="/support"
                             className="mx-8 flex py-2 text-base font-semibold text-[#bababa] group-hover:text-white lg:mr-0 lg:ml-8 lg:inline-flex lg:py-6 lg:px-0 xl:ml-12"
                           >
                             Support
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </nav>

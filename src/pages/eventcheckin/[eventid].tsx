@@ -409,7 +409,7 @@ return (
               </div>
               {tickets.map((item,index)=>
 
-              <div
+              <div key={index}
                 className="mb-8 overflow-hidden rounded-lg border border-stroke bg-bg-color"
               >
                

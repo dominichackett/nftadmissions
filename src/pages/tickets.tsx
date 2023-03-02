@@ -7,6 +7,7 @@ import { useSigner,useContractRead,useAccount  } from 'wagmi'
 import {useState, useEffect } from 'react'
 import Notification from '@/components/Notification/Notification'
 import SearchBar from '@/components/SearchBar/searchbar'
+import Link from 'next/link'
 export default function Tickets() {
   const [tickets,setTickets] = useState([])
   const [refreshData,setRefresData] = useState(new Date())
@@ -148,12 +149,12 @@ useEffect(()=>{
             <li
               className="flex items-center text-base font-medium text-white"
             >
-              <a
+              <Link
                 href="/"
                 className="text-white hover:text-primary"
               >
                 Home
-              </a>
+              </Link>
               <span className="px-3"> / </span>
             </li>
             <li
@@ -169,19 +170,19 @@ useEffect(()=>{
       <div className="container">
       <SearchBar />
         <div className="-mx-4 flex flex-wrap">
-         {tickets.map((item,index)=> <div className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
+         {tickets.map((item,index)=> <div key={item.eventId} className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
             <div
               className="mb-10 rounded-xl border border-stroke bg-bg-color p-[18px]"
             >
               <div className="max-h-[290px] min-h-[290px] relative   rounded-lg">
-              <a
+              <Link
                  href={`/eventdetail/${item.eventId}`}>
                 <img
                   src={item.image}
                   alt="Ticket"
                   className="w-full"
                 />
-                </a>
+                </Link>
                 <button
                   className="absolute right-4 top-4 inline-flex items-center rounded-md bg-white px-2 py-1"
                 >
@@ -266,12 +267,12 @@ useEffect(()=>{
                 <div
                   className="flex items-center justify-between border-t-2 border-stroke pt-5"
                 >
-                  <a
+                  <Link
                  href={`/eventdetail/${item.eventId}`}
                  className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                   >
                     View Event
-                  </a>
+                  </Link>
                   <button
                     onClick={()=>refundTicket(item.eventId,item.ticketId)}
                     className="flex items-center justify-center rounded-md py-3 px-4 text-sm font-semibold text-white hover:text-primary sm:px-5"

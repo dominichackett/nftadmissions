@@ -15,8 +15,6 @@ const fantomChain: Chain = {
   id: 4002,
   name: 'Fantom Testnet',
   network: 'fantom',
-  iconUrl: 'https://example.com/icon.svg',
-  iconBackground: '#fff',
   nativeCurrency: {
     decimals: 18,
     name: 'Fantom',
@@ -24,6 +22,9 @@ const fantomChain: Chain = {
   },
   rpcUrls: {
     default: {
+      http: ['https://endpoints.omniatech.io/v1/fantom/testnet/public']
+    },
+    public: {
       http: ['https://endpoints.omniatech.io/v1/fantom/testnet/public']
     },
   },

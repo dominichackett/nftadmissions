@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { Inter } from '@next/font/google'
 import Header from '../components/Header/header'
 import Footer from '@/components/Footer/footer'
 import { ethers } from 'ethers'
@@ -7,6 +6,7 @@ import { TicketManagerContractAddress,TicketManagerContractABI } from '@/compone
 import { useSigner  } from 'wagmi'
 import {useState, useEffect } from 'react'
 import SearchBar from '@/components/SearchBar/searchbar'
+import Link from 'next/link'
 export default function MyEvents() {
   const [events,setEvents] = useState([])
 
@@ -64,12 +64,12 @@ export default function MyEvents() {
             <li
               className="flex items-center text-base font-medium text-white"
             >
-              <a
+              <Link
                 href="/"
                 className="text-white hover:text-primary"
               >
                 Home
-              </a>
+              </Link>
               <span className="px-3"> / </span>
             </li>
             <li
@@ -92,19 +92,19 @@ export default function MyEvents() {
         <div className="-mx-4 flex flex-wrap">
          
          {events.map((item,index)=>
-         <div className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
+         <div key={item.eventId} className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
          <div
            className=" rounded-xl border border-stroke bg-bg-color p-[18px]"
          >
            <div className="  relative mb-5  rounded-lg">
-           <a
+           <Link
                  href={`/eventdetail/${item.eventId}`}>
            
              <img
                src={item.image}
                alt="auctions"
                className="w-full"
-             /></a>
+             /></Link>
              <button
                className="absolute right-4 top-4 inline-flex items-center rounded-md bg-white px-2 py-1"
              >
@@ -130,12 +130,12 @@ export default function MyEvents() {
            </div>
            <div>
              <h3>
-               <a
+               <Link
                  href={`/eventdetail/${item.eventId}`}
                  className=" mb-5 inline-block text-lg font-semibold text-white hover:text-primary"
                >
                  {item.name}
-               </a>
+               </Link>
              </h3>
              <div className="mb-6 flex items-center justify-between">
                <div className="w-full">
@@ -176,12 +176,12 @@ export default function MyEvents() {
              <div
                className="flex items-center justify-between border-t-2 border-stroke pt-5"
              >
-               <a
+               <Link
                  href={`/eventdetail/${item.eventId}`}
                  className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                >
                  View Event
-               </a>
+               </Link>
                
              </div>
            </div>

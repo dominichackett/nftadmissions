@@ -3,6 +3,7 @@ import { Inter } from '@next/font/google'
 import Header from '../components/Header/header'
 import Footer from '@/components/Footer/footer'
 import Features from '@/components/Features/feature'
+import Link from 'next/link'
 export default function Home() {
  
   return (
@@ -46,18 +47,18 @@ export default function Home() {
               >
 NFT Admissions is a decentralized application (dApp) that uses non-fungible tokens (NFTs) as digital tickets to enter events. Built on the Fantom blockchain, NFT Admissions offers a secure and transparent platform for event organizers to issue, sell and manage NFT tickets.             </p>
               <div className="flex flex-wrap items-center">
-                <a
+                <Link
                   href="/events"
                   className="mr-5 mb-5 inline-flex items-center justify-center rounded-md border-2 border-primary bg-primary py-3 px-7 text-base font-semibold text-white transition-all hover:bg-opacity-90"
                 >
                   View Events
-                </a>
-                <a
+                </Link>
+                <Link
                   href="create-item.html"
                   className="mb-5 inline-flex items-center justify-center rounded-md border-2 border-white py-3 px-7 text-base font-semibold text-white transition-all hover:border-primary hover:bg-primary"
                 >
                   About
-                </a>
+                </Link>
               </div>
             </div>
           </div>

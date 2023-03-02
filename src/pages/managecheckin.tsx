@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import Header from '../components/Header/header'
 import Footer from '@/components/Footer/footer'
-import Features from '@/components/Features/feature'
+import Link from 'next/link'
 export default function CheckIn() {
  
   return (
@@ -27,12 +27,12 @@ export default function CheckIn() {
             <li
               className="flex items-center text-base font-medium text-white"
             >
-              <a
+              <Link
                 href="/"
                 className="text-white hover:text-primary"
               >
                 Home
-              </a>
+              </Link>
               <span className="px-3"> / </span>
             </li>
             <li
@@ -172,12 +172,12 @@ export default function CheckIn() {
               </div>
               <div>
                 <h3>
-                  <a
+                  <Link
                     href="item-details.html"
                     className="mt-5 mb-3 inline-block text-lg font-semibold text-white hover:text-primary"
                   >
                     3d abstract illustration
-                  </a>
+                  </Link>
                 </h3>
                 <div className="mb-6 flex items-center justify-between">
                   <div className="w-full">
@@ -222,12 +222,12 @@ export default function CheckIn() {
                 <div
                   className="flex items-center justify-between border-t-2 border-stroke pt-5"
                 >
-                  <a
+                  <Link
                     href="/eventcheckin"
                     className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                   >
                     Check In
-                  </a>
+                  </Link>
                   
                 </div>
               </div>
@@ -268,12 +268,12 @@ export default function CheckIn() {
               </div>
               <div>
                 <h3>
-                  <a
+                  <Link
                     href="item-details.html"
                     className="mb-3 inline-block text-lg font-semibold text-white hover:text-primary"
                   >
                     3d abstract illustration
-                  </a>
+                  </Link>
                 </h3>
                 <div className="mb-6 flex items-center justify-between">
                   <div className="w-full">
@@ -318,13 +318,13 @@ export default function CheckIn() {
                 <div
                   className="flex items-center justify-between border-t-2 border-stroke pt-5"
                 >
-                  <a
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                   >
                     Place Bid
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md py-3 px-4 text-sm font-semibold text-white hover:text-primary sm:px-5"
                   >
@@ -343,7 +343,7 @@ export default function CheckIn() {
                       </svg>
                     </span>
                     View History
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -383,12 +383,12 @@ export default function CheckIn() {
               </div>
               <div>
                 <h3>
-                  <a
+                  <Link
                     href="item-details.html"
                     className="mb-3 inline-block text-lg font-semibold text-white hover:text-primary"
                   >
                     3d abstract illustration
-                  </a>
+                  </Link>
                 </h3>
                 <div className="mb-6 flex items-center justify-between">
                   <div className="w-full">
@@ -433,13 +433,13 @@ export default function CheckIn() {
                 <div
                   className="flex items-center justify-between border-t-2 border-stroke pt-5"
                 >
-                  <a
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                   >
                     Place Bid
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md py-3 px-4 text-sm font-semibold text-white hover:text-primary sm:px-5"
                   >
@@ -458,7 +458,7 @@ export default function CheckIn() {
                       </svg>
                     </span>
                     View History
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -498,12 +498,12 @@ export default function CheckIn() {
               </div>
               <div>
                 <h3>
-                  <a
+                  <Link
                     href="item-details.html"
                     className="mb-3 inline-block text-lg font-semibold text-white hover:text-primary"
                   >
                     3d abstract illustration
-                  </a>
+                  </Link>
                 </h3>
                 <div className="mb-6 flex items-center justify-between">
                   <div className="w-full">
@@ -548,13 +548,13 @@ export default function CheckIn() {
                 <div
                   className="flex items-center justify-between border-t-2 border-stroke pt-5"
                 >
-                  <a
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                   >
                     Place Bid
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md py-3 px-4 text-sm font-semibold text-white hover:text-primary sm:px-5"
                   >
@@ -573,7 +573,7 @@ export default function CheckIn() {
                       </svg>
                     </span>
                     View History
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -613,12 +613,12 @@ export default function CheckIn() {
               </div>
               <div>
                 <h3>
-                  <a
+                  <Link
                     href="item-details.html"
                     className="mb-3 inline-block text-lg font-semibold text-white hover:text-primary"
                   >
                     3d abstract illustration
-                  </a>
+                  </Link>
                 </h3>
                 <div className="mb-6 flex items-center justify-between">
                   <div className="w-full">
@@ -663,13 +663,13 @@ export default function CheckIn() {
                 <div
                   className="flex items-center justify-between border-t-2 border-stroke pt-5"
                 >
-                  <a
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                   >
                     Place Bid
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md py-3 px-4 text-sm font-semibold text-white hover:text-primary sm:px-5"
                   >
@@ -688,7 +688,7 @@ export default function CheckIn() {
                       </svg>
                     </span>
                     View History
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -728,12 +728,12 @@ export default function CheckIn() {
               </div>
               <div>
                 <h3>
-                  <a
+                  <Link
                     href="item-details.html"
                     className="mb-3 inline-block text-lg font-semibold text-white hover:text-primary"
                   >
                     3d abstract illustration
-                  </a>
+                  </Link>
                 </h3>
                 <div className="mb-6 flex items-center justify-between">
                   <div className="w-full">
@@ -778,13 +778,13 @@ export default function CheckIn() {
                 <div
                   className="flex items-center justify-between border-t-2 border-stroke pt-5"
                 >
-                  <a
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                   >
                     Place Bid
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md py-3 px-4 text-sm font-semibold text-white hover:text-primary sm:px-5"
                   >
@@ -803,7 +803,7 @@ export default function CheckIn() {
                       </svg>
                     </span>
                     View History
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -843,12 +843,12 @@ export default function CheckIn() {
               </div>
               <div>
                 <h3>
-                  <a
+                  <Link
                     href="item-details.html"
                     className="mb-3 inline-block text-lg font-semibold text-white hover:text-primary"
                   >
                     3d abstract illustration
-                  </a>
+                  </Link>
                 </h3>
                 <div className="mb-6 flex items-center justify-between">
                   <div className="w-full">
@@ -893,13 +893,13 @@ export default function CheckIn() {
                 <div
                   className="flex items-center justify-between border-t-2 border-stroke pt-5"
                 >
-                  <a
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                   >
                     Place Bid
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md py-3 px-4 text-sm font-semibold text-white hover:text-primary sm:px-5"
                   >
@@ -918,7 +918,7 @@ export default function CheckIn() {
                       </svg>
                     </span>
                     View History
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -958,12 +958,12 @@ export default function CheckIn() {
               </div>
               <div>
                 <h3>
-                  <a
+                  <Link
                     href="item-details.html"
                     className="mb-3 inline-block text-lg font-semibold text-white hover:text-primary"
                   >
                     3d abstract illustration
-                  </a>
+                  </Link>
                 </h3>
                 <div className="mb-6 flex items-center justify-between">
                   <div className="w-full">
@@ -1008,13 +1008,13 @@ export default function CheckIn() {
                 <div
                   className="flex items-center justify-between border-t-2 border-stroke pt-5"
                 >
-                  <a
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md bg-primary py-3 px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 sm:px-5"
                   >
                     Place Bid
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="javascript:void(0)"
                     className="flex items-center justify-center rounded-md py-3 px-4 text-sm font-semibold text-white hover:text-primary sm:px-5"
                   >
@@ -1033,7 +1033,7 @@ export default function CheckIn() {
                       </svg>
                     </span>
                     View History
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -1041,12 +1041,12 @@ export default function CheckIn() {
 
           <div className="w-full px-4">
             <div className="pt-8 text-center">
-              <a
+              <Link
                 href="javascript:void(0)"
                 className="inline-flex items-center justify-center rounded-md border-2 border-white py-3 px-7 text-base font-semibold text-white transition-all hover:border-primary hover:bg-primary"
               >
                 Load More...
-              </a>
+              </Link>
             </div>
           </div>
         </div>
