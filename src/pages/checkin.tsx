@@ -176,7 +176,7 @@ export default function CheckIn() {
    }else {
     console.log(error)
     //const errorMessage = ethers.utils.revert(error.reason);
-     setErrorString(`${error.reason}`);
+     setErrorString(`${error}`);
    
  }
      setIsError(true) 
