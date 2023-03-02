@@ -83,7 +83,7 @@ export default function CheckIn() {
   const [isLoaded,setIsloaded] = useState(false)
   const [isScanned,setIsScanned] = useState(false)
   const [isError,setIsError]  = useState(false)
-  const [showScanner,setShowScanner] = useState(false)
+  const [showScanner,setShowScanner] = useState(true)
   const [errorString,setErrorString] = useState("")
   const [event,setEvent] = useState()
   const [checkedIn,setCheckedIn] = useState(false)
@@ -237,15 +237,14 @@ export default function CheckIn() {
          { showScanner == true &&<div className='scan-line mx-10'></div>}
  
 <QrReader
-style={previewStyle}
+containerStyle={previewStyle}
 
-key="environment"
 constraints={{ facingMode: 'environment' }}
 delay={500}
 
              onError={handleError}
              onResult={handleScan}
-             onLoad={()=> setShowScanner(true)}
+             //onLoad={()=>alert(true)}
               /></div>: null} {(isScanned  && !isError && !checkedIn) &&          <ConfirmCheckIn callback={checkInToEvent} event={event}/>
             }
             {(isScanned && isError) && <CheckInError event={event} reloadScanner={reloadScanner} errorString={errorString} error="Can't login to Event"/>
