@@ -234,8 +234,7 @@ export default function CheckIn() {
             <div                       className=" mt-6 mb-14 items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
 >
          {isLoaded && !isScanned? <div className='container' >
-         { showScanner == true &&<div className='scan-line mx-10'></div>}
- 
+        
 <QrReader
 containerStyle={previewStyle}
 
@@ -245,7 +244,8 @@ delay={500}
              onError={handleError}
              onResult={handleScan}
              //onLoad={()=>alert(true)}
-              /></div>: null} {(isScanned  && !isError && !checkedIn) &&          <ConfirmCheckIn callback={checkInToEvent} event={event}/>
+              /> { showScanner == true &&<div className='scan-line mx-10'></div>}
+              </div>: null} {(isScanned  && !isError && !checkedIn) &&          <ConfirmCheckIn callback={checkInToEvent} event={event}/>
             }
             {(isScanned && isError) && <CheckInError event={event} reloadScanner={reloadScanner} errorString={errorString} error="Can't login to Event"/>
             }

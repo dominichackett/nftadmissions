@@ -13,7 +13,8 @@
 /* Set the container div */
 .container {
   position: relative;
- 
+  height: 240;
+    width: 320;
 }
 
 /* Create the scan line */
@@ -30,7 +31,7 @@
 /* Animate the scan line */
 @keyframes scan {
   from {
-    top: 0px;
+    top: 40px;
   }
   to {
     top: 98%;
