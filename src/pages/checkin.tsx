@@ -140,7 +140,6 @@ export default function CheckIn() {
   
   //Check into event
   const checkInToEvent= async () => {
-   alert(JSON.stringify(event))
     try {
       const contract = new ethers.Contract(
        TicketManagerContractAddress,
@@ -248,7 +247,7 @@ delay={500}
              onError={handleError}
              onResult={handleScan}
              onLoad={()=>alert(true)}
-              /> { showScanner == true &&<div className='scan-line mx-10'></div>}
+              /> { showScanner == true &&<div className='scan-line mx-14'></div>}
               </div>: null} {(isScanned  && !isError && !checkedIn) &&          <ConfirmCheckIn callback={checkInToEvent} event={event}/>
             }
             {(isScanned && isError) && <CheckInError event={event} reloadScanner={reloadScanner} errorString={errorString} error="Can't login to Event"/>
