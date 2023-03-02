@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Header from '../components/Header/header'
 import Footer from '@/components/Footer/footer'
-import QrReader  from 'react-qr-scanner';
+import {QrReader}  from 'react-qr-reader';
 import { useState,useEffect } from 'react';
 import { XCircleIcon ,CheckCircleIcon,QuestionMarkCircleIcon} from "@heroicons/react/24/solid";
 import { ethers } from 'ethers';
@@ -239,13 +239,12 @@ export default function CheckIn() {
 <QrReader
 style={previewStyle}
 
-
-  facingMode= {'environment'}
-
+key="environment"
+constraints={{ facingMode: 'environment' }}
 delay={500}
 
              onError={handleError}
-             onScan={handleScan}
+             onResult={handleScan}
              onLoad={()=> setShowScanner(true)}
               /></div>: null} {(isScanned  && !isError && !checkedIn) &&          <ConfirmCheckIn callback={checkInToEvent} event={event}/>
             }
