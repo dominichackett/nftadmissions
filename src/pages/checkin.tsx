@@ -235,7 +235,7 @@ export default function CheckIn() {
                 </h2>
           </div>
        
-            <div                       className=" mt-6 mb-14 items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
+            <div                       className="m6 mt-6 mb-14 items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
 >
          {isLoaded && !isScanned? <div className='container' >
         

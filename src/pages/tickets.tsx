@@ -174,7 +174,7 @@ useEffect(()=>{
             <div
               className="mb-10 rounded-xl border border-stroke bg-bg-color p-[18px]"
             >
-              <div className="max-h-[290px] min-h-[290px] relative   rounded-lg">
+              <div className="mb-5 max-h-[290px] min-h-[290px] relative   rounded-lg">
               <Link
                  href={`/eventdetail/${item.eventId}`}>
                 <img
