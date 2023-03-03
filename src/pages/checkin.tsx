@@ -176,10 +176,10 @@ export default function CheckIn() {
    }else {
     console.log(error)
     //const errorMessage = ethers.utils.revert(error.reason);
-    let revertReason = ethers.utils.parseRevertReason(error.data);
+    //let revertReason = ethers.utils.parseRevertReason(error.data);
    
 
-     setErrorString(`${error?.reason ? error.reason:revertReason }`);
+     setErrorString(`${error?.reason ? error.reason: JSON.stringify(error) }`);
    
  }
      setIsError(true) 
