@@ -176,7 +176,10 @@ export default function CheckIn() {
    }else {
     console.log(error)
     //const errorMessage = ethers.utils.revert(error.reason);
-     setErrorString(`${error?.reason ? error.reason:error }`);
+    let revertReason = ethers.utils.parseRevertReason(error.data);
+   
+
+     setErrorString(`${error?.reason ? error.reason:revertReason }`);
    
  }
      setIsError(true) 
@@ -235,9 +238,9 @@ export default function CheckIn() {
                 </h2>
           </div>
        
-            <div                       className="m6 mt-6 mb-14 items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] p-12 text-center"
+            <div                       className="m6 mt-6 mb-14 items-center justify-center rounded-lg border border-dashed border-[#A1A0AE] bg-[#353444] text-center"
 >
-         {isLoaded && !isScanned? <div className='m-6 container' >
+         {isLoaded && !isScanned? <div className='container' >
         
 <QrReader
 containerStyle={previewStyle}
