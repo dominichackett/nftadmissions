@@ -83,7 +83,7 @@ export default function CheckIn() {
   const [isLoaded,setIsloaded] = useState(false)
   const [isScanned,setIsScanned] = useState(false)
   const [isError,setIsError]  = useState(false)
-  const [showScanner,setShowScanner] = useState(true)
+  const [showScanner,setShowScanner] = useState(false)
   const [errorString,setErrorString] = useState("")
   const [event,setEvent] = useState()
   const [checkedIn,setCheckedIn] = useState(false)
@@ -188,6 +188,9 @@ export default function CheckIn() {
    }
  
   }
+  useEffect(()=>{
+    setShowScanner(true)
+  },[])
   return (
     <>
       <Head>

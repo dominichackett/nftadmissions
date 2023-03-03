@@ -94,9 +94,9 @@ export default function MyEvents() {
          {events.map((item,index)=>
          <div key={item.eventId} className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
          <div
-           className=" rounded-xl border border-stroke bg-bg-color p-[18px]"
+           className= "rounded-xl border border-stroke bg-bg-color p-[18px]"
          >
-           <div className="  relative mb-5  rounded-lg">
+           <div className="min-h-[280px] max-h-[280px]  relative mb-5  rounded-lg">
            <Link
                  href={`/eventdetail/${item.eventId}`}>
            

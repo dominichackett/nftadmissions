@@ -103,7 +103,7 @@ export default function MyEvents() {
          <div
            className=" rounded-xl border border-stroke bg-bg-color p-[18px]"
          >
-           <div className="  relative mb-5  rounded-lg">
+           <div className="min-h-[280px] max-h-[280px]  relative mb-5  rounded-lg">
            <Link
                  href={`/eventdetail/${item.eventId}`}>
            
