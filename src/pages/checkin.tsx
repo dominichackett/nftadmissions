@@ -91,6 +91,7 @@ export default function CheckIn() {
   const reloadScanner = () =>{
       setIsError(false)
       setIsScanned(false)
+      setErrorString()
   }
   const handleScan = (data:any,error:any) => {
    
@@ -175,7 +176,7 @@ export default function CheckIn() {
    }else {
     console.log(error)
     //const errorMessage = ethers.utils.revert(error.reason);
-     setErrorString(`${error}`);
+     setErrorString(`${error.reason}`);
    
  }
      setIsError(true) 
@@ -253,7 +254,8 @@ delay={500}
             {(isScanned && isError) && <CheckInError event={event} reloadScanner={reloadScanner} errorString={errorString} error="Can't login to Event"/>
             }
             {checkedIn && <CheckInSuccess  event={event}/>}
-            </div> </div>
+            </div>
+             </div>
           </div>
           </section> 
     <Footer />

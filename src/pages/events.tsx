@@ -19,7 +19,7 @@ export default function MyEvents() {
       TicketManagerContractABI,
       signer)   
       //console.log(signer)   
-      const filter =  contract.filters.EventCreated(await signer?.getAddress(),null,null,null,null,null)
+      const filter =  contract.filters.EventCreated(null,null,null,null,null,null)
       const results = await contract?.queryFilter(filter,0,'latest');
       //console.log(results)
       let _events = []
