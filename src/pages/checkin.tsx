@@ -133,7 +133,9 @@ export default function CheckIn() {
 
   const previewStyle = {
     height: 320,
-    width: 320
+    width: 320,
+    marginTop:6,
+    marginBottom:6
   }
 
   useEffect(()=>setIsloaded(true),[])
