@@ -11,8 +11,7 @@ export default function Features(){
        Core Features
      </h2>
      <p className="text-lg font-medium text-body-color">
-       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam a
-       lacinia dolor, in pretium nunc. Morbi mollis arcu eget.
+     Here are four of the key features that NFT Admissions provides.
      </p>
    </div>
 
@@ -41,9 +40,8 @@ export default function Features(){
            className="mb-2 text-xl font-bold text-white transition group-hover:text-black"
          > Ticket Management         </h3>
 
-         <p className="text-base font-medium text-body-color">
-           Lorem ipsum dolor sit amet consectetur smit.
-         </p>
+         <p className="h-[130px] text-base font-medium text-body-color">
+         A comprehensive ticket management system, allowing event organizers to track ticket sales, issue refunds, and manage the transfer of NFT tickets between users.         </p>
        </div>
      </div>
      <div className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
@@ -72,9 +70,8 @@ export default function Features(){
            Event Check In
          </h3>
 
-         <p className="text-base font-medium text-body-color">
-           Lorem ipsum dolor sit amet consectetur smit.
-         </p>
+         <p className="h-[130px] text-base font-medium text-body-color">
+         A secure and efficient method for ticket redemption at the event, using QR codes and other methods to verify ticket ownership.         </p>
        </div>
      </div>
      <div className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
@@ -103,9 +100,8 @@ export default function Features(){
            Collectable NFT Tickets
          </h3>
 
-         <p className="text-base font-medium text-body-color">
-           Lorem ipsum dolor sit amet consectetur smit.
-         </p>
+         <p className="h-[130px] text-base font-medium text-body-color">
+         The platform  allows event organizers to create NFT tickets for their events, defining the ticket type, price, and number of tickets available.         </p>
        </div>
      </div>
      <div className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
@@ -134,8 +130,8 @@ export default function Features(){
                 Blockchain Security
               </h3>
 
-              <p className="text-base font-medium text-body-color">
-                Lorem ipsum dolor sit amet consectetur smit.
+              <p className="h-[130px] text-base font-medium text-body-color">
+              Using state-of-the-art security measures to protect user data, prevent counterfeiting, and secure the NFT ticket transfer process.
               </p>
             </div>
           </div>

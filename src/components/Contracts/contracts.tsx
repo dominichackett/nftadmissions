@@ -1,5 +1,5 @@
 export const TicketManagerContractAddress =
-  "0xb1129ba7611562940aAf903f99C6A76A340101c6";
+  "0xD97D88dD82E5188983135b0ce6FeeeCF67E723C5";
 export const TicketManagerContractABI =
 [
 	{

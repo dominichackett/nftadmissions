@@ -99,7 +99,7 @@ export default function MyEvents() {
         <div className="-mx-4 flex flex-wrap">
          
          {events.map((item,index)=>
-         <div key={item.eventId} className="w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
+         <div key={item.eventId} className="mt-6 w-full px-4 md:w-1/2 lg:w-1/3 2xl:w-1/4">
          <div
            className=" rounded-xl border border-stroke bg-bg-color p-[18px]"
          >
@@ -110,7 +110,7 @@ export default function MyEvents() {
              <img
                src={item.image}
                alt="auctions"
-               className="w-full"
+               className="w-full h-[280px]"
              /></Link>
              <button
                className="absolute right-4 top-4 inline-flex items-center rounded-md bg-white px-2 py-1"
