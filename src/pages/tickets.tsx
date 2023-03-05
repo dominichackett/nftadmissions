@@ -35,6 +35,7 @@ useEffect(()=>{
     signer)   
    const filter =  contract.filters.TicketMinted(await signer?.getAddress(),null,null,null)
    const results = await contract?.queryFilter(filter,0,'latest');
+ //  alert(results.length)
    //console.log(results)
    let _tickets = []
    let ticketMap = new Map()
@@ -44,13 +45,14 @@ useEffect(()=>{
       NFTTicketContractABI,
       signer)   
 
-      const tx = await nftContract.balanceOf(results[index].args.owner,results[index].args.ticketId+1)
+      const tx = await nftContract.balanceOf(results[index].args.owner,parseInt(results[index].args.ticketId)+1)
+    //  alert(tx.toNumber())
       console.log(tx)
       if(tx.toNumber() > 0 && !ticketMap[results[index].args.eventId])
       {
          const eventData = await contract.getEvent(results[index].args.eventId)
          console.log(eventData)
-         const ticketMetadata = await nftContract.uri(results[index].args.ticketId+1)
+         const ticketMetadata = await nftContract.uri(parseInt(results[index].args.ticketId)+1)
          console.log(ticketMetadata)
          const url =ticketMetadata.replace("ipfs://" ," https://nftstorage.link/ipfs/")
          const data = await fetch(url)
