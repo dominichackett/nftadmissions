@@ -14,25 +14,54 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Summary
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+NFTAdmissions is a decentralized application (dApp) that uses non-fungible tokens (NFTs) as digital tickets to enter events. Built on the Fantom blockchain, NFTAdmissions offers a secure and transparent platform for event organizers to issue, sell and manage NFT tickets. The platform eliminates the need for physical tickets, reducing the risk of counterfeiting, and providing a seamless and convenient experience for ticket holders. With NFTAdmissions, event organizers can create unique NFTs for each event and set conditions for ticket redemption, ensuring that only legitimate ticket holders can enter the event. NFTAdmissions uses the fast and efficient Fantom blockchain, providing users with an immersive experience and reducing the risk of scalability issues.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+NFTAdmissions is a decentralized application (dApp) that aims to revolutionize the event ticketing industry by using non-fungible tokens (NFTs) as digital tickets. The platform is built on the Fantom blockchain, offering event organizers a secure and transparent platform to issue, sell, and manage NFT tickets. By using NFTs as tickets, NFTAdmissions eliminates the need for physical tickets, reducing the risk of counterfeiting and ensuring a seamless and convenient experience for ticket holders.
 
-## Learn More
+With NFTAdmissions, event organizers can create unique NFTs for each event, allowing them to set specific conditions for ticket redemption. This ensures that only legitimate ticket holders can enter the event, increasing security and preventing ticket fraud. The use of NFTs also allows for easy transferability of tickets between users, enabling a more fluid and efficient ticketing process.
 
-To learn more about Next.js, take a look at the following resources:
+NFTAdmissions uses the fast and efficient Fantom blockchain, providing users with an immersive experience and reducing the risk of scalability issues. The platform aims to provide a convenient and secure solution for event organizers and attendees alike, bringing innovation to the traditional event ticketing industry.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Demo Video
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+[![IMAGE ALT TEXT HERE](https://github.com/dominichackett/nftadmissions/blob/main/images/home.png)]https://www.youtube.com/watch?v=Zmkx84Mzo88
 
-## Deploy on Vercel
+## Screenshots
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Home Page
+![Home Page](https://github.com/dominichackett/nftadmissions/blob/main/images/home.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+### Events
+![Channels](hhttps://github.com/dominichackett/nftadmissions/blob/main/images/events.png)
+
+
+### Event Details
+![Channel](https://github.com/dominichackett/nftadmissions/blob/main/images/eventdetails.png)
+
+### My Events
+![Videos](https://github.com/dominichackett/nftadmissions/blob/main/images/myevents.png)
+
+### Create Event
+![Videos](https://github.com/dominichackett/nftadmissions/blob/main/images/createevent.png)
+
+### Event Checkin
+![Videos](https://github.com/dominichackett/nftadmissions/blob/main/images/eventcheckin.png)
+
+### Tickets
+![Video](https://github.com/dominichackett/nftadmissions/blob/main/images/tickets.png)
+
+### Scan QR Code 
+![Videos](https://github.com/dominichackett/nftadmissions/blob/main/images/scan.png)
+
+
+
+
+
+
+
+
