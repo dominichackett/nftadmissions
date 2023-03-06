@@ -251,7 +251,7 @@ export default function CheckIn() {
 containerStyle={previewStyle}
 
 constraints={{ facingMode: 'environment' }}
-scanDelay={3000}
+scanDelay={500}
 
              onError={handleError}
              onResult={handleScan}
