@@ -28,7 +28,7 @@ NFTAdmissions uses the fast and efficient Fantom blockchain, providing users wit
 
 ## Demo Video
 
-[![IMAGE ALT TEXT HERE](https://github.com/dominichackett/nftadmissions/blob/main/images/home.png)]https://www.youtube.com/watch?v=Zmkx84Mzo88
+![IMAGE ALT TEXT HERE](https://github.com/dominichackett/nftadmissions/blob/main/images/home.png)]https://www.youtube.com/watch?v=Zmkx84Mzo88
 
 ## Screenshots
 
@@ -37,26 +37,26 @@ NFTAdmissions uses the fast and efficient Fantom blockchain, providing users wit
 
 
 ### Events
-![Channels](hhttps://github.com/dominichackett/nftadmissions/blob/main/images/events.png)
+![Events](https://github.com/dominichackett/nftadmissions/blob/main/images/events.png)
 
 
 ### Event Details
-![Channel](https://github.com/dominichackett/nftadmissions/blob/main/images/eventdetails.png)
+![Event Detailsl](https://github.com/dominichackett/nftadmissions/blob/main/images/eventdetails.png)
 
 ### My Events
-![Videos](https://github.com/dominichackett/nftadmissions/blob/main/images/myevents.png)
+![My Events](https://github.com/dominichackett/nftadmissions/blob/main/images/myevents.png)
 
 ### Create Event
-![Videos](https://github.com/dominichackett/nftadmissions/blob/main/images/createevent.png)
+![Create Event](https://github.com/dominichackett/nftadmissions/blob/main/images/createevent.png)
 
 ### Event Checkin
-![Videos](https://github.com/dominichackett/nftadmissions/blob/main/images/eventcheckin.png)
+![Event Checkin](https://github.com/dominichackett/nftadmissions/blob/main/images/eventcheckin.png)
 
 ### Tickets
-![Video](https://github.com/dominichackett/nftadmissions/blob/main/images/tickets.png)
+![Tickets](https://github.com/dominichackett/nftadmissions/blob/main/images/tickets.png)
 
 ### Scan QR Code 
-![Videos](https://github.com/dominichackett/nftadmissions/blob/main/images/scan.png)
+![Scan](https://github.com/dominichackett/nftadmissions/blob/main/images/scan.png)
 
 
 
